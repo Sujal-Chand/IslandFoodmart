@@ -4,6 +4,9 @@
 // Write your JavaScript code.
 const carousel = document.querySelector('.carousel');
 const container = document.querySelector('.carousel-container');
+const slides = carousel.querySelector('.slides');
+const dots = carousel.querySelector('.dots');
+const dotIndicators = dots.querySelectorAll('.dot');
 const prevBtn = document.querySelector('.carousel-prev');
 const nextBtn = document.querySelector('.carousel-next');
 const images = document.querySelectorAll('.carousel img');
@@ -15,7 +18,22 @@ const imageWidth = images[0].clientWidth;
 function moveTo(index) {
     currentIndex = index;
     container.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+
+    // change the active dot indicator
+    dotIndicators.forEach((dot, i) => {
+        if (i === currentIndex) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
 }
+
+dotIndicators.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+        moveTo(i);
+    });
+});
 
 prevBtn.addEventListener('click', () => {
     if (currentIndex > 0) {
