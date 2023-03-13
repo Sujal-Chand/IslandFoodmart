@@ -33,6 +33,25 @@ body {
     flex-shrink: 0;
 }
 
+.dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-color: #bbb;
+    cursor: pointer;
+}
+
+.active {
+    background-color: #333;
+}
+
 .carousel-prev, .carousel-next {
     position: absolute;
     top: 50%;
@@ -55,22 +74,3 @@ body {
 .carousel-next {
     right: 0;
 }
-
-.carousel-dots {
-    text-align: center;
-    margin-top: 10px;
-}
-
-.carousel-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    border-radius: 50%;
-    background-color: black;
-    cursor: pointer;
-}
-
-    .carousel-dot.active {
-        background-color: black;
-    }
