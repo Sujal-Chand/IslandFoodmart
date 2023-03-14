@@ -59,4 +59,4 @@ setInterval(() => {
     } else {
         moveTo(0);
     }
-}, 4000);
+}, 3000);
