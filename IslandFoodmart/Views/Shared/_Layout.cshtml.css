@@ -1,48 +1,38 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+for details on configuring this project to bundle and minify static web assets. 
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-a {
-  color: #0077cc;
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: center;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.navbar-nav .nav-link {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #333;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.navbar-nav .nav-link:hover {
+    color: #007bff;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+footer {
+    margin-top: 50px;
+    padding: 20px 0;
+    font-size: 16px;
+    color: #777;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+footer a {
+    color: #007bff;
+    text-decoration: none;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+footer a:hover {
+    text-decoration: underline;
 }
+
+    */
