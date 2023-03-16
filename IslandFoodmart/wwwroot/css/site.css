@@ -15,6 +15,7 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: beige;
 }
 
 .carousel {
@@ -73,4 +74,8 @@ body {
 
 .carousel-next {
     right: 0;
+}
+
+h1 {
+    font-family: 'Comic Sans MS';
 }
