@@ -7,7 +7,7 @@
   margin-left: 1em;
 }
 .dropdown-item:hover {
-  background-color: lightsalmon;
+  background-color: lightgreen;
   color: #fff;
 }
 .dropdown .dropdown-menu {
@@ -50,7 +50,7 @@ for details on configuring this project to bundle and minify static web assets.
 .navbar-nav .nav-link:hover {
     color: #007bff;
 }
-
+ */
 footer {
     margin-top: 50px;
     padding: 20px 0;
@@ -59,7 +59,7 @@ footer {
 }
 
 footer a {
-    color: #007bff;
+    color: black;
     text-decoration: none;
 }
 
@@ -67,4 +67,4 @@ footer a:hover {
     text-decoration: underline;
 }
 
-    */
+   
