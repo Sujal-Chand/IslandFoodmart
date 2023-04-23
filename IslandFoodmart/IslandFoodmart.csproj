@@ -8,8 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\lib\img1.png" />
-    <None Include="wwwroot\lib\img2.png" />
     <None Include="wwwroot\lib\img3.png" />
   </ItemGroup>
 
