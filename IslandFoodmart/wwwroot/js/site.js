@@ -13,7 +13,7 @@ const images = document.querySelectorAll('.carousel img');
 
 let currentIndex = 0;
 const maxIndex = images.length - 1;
-const imageWidth = images[0].clientWidth;
+let imageWidth = images[0].clientWidth;
 
 function moveTo(index) {
     currentIndex = index;
@@ -58,5 +58,13 @@ setInterval(() => {
         moveTo(currentIndex + 1);
     } else {
         moveTo(0);
-    }
+    }  
 }, 3000);
+
+//Handles imageWidth when resizing the window
+onresize = (event) => {
+    if (imageWidth != images[0].clientWidth) {
+        imageWidth = images[0].clientWidth;
+        moveTo(currentIndex);
+    }
+};
