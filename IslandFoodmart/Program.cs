@@ -1,4 +1,4 @@
-using IslandFoodmart.Data;
+using IslandFoodmart.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
