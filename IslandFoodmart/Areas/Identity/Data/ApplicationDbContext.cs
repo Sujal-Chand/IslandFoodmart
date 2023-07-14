@@ -7,7 +7,7 @@ using IslandFoodmart.Models;
 
 namespace IslandFoodmart.Areas.Identity.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
+    public class ApplicationDbContext : IdentityDbContext<DatabaseUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -21,11 +21,11 @@ namespace IslandFoodmart.Areas.Identity.Data
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
         }
     }
-    public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<User>
+    public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<DatabaseUser>
     {
-        public void Configure(EntityTypeBuilder<User> builder) 
+        public void Configure(EntityTypeBuilder<DatabaseUser> builder) 
         {
-            builder.Property(u => u.UserName).HasMaxLength(20);
+            builder.Property(u => u.FirstName).HasMaxLength(20);
         }
     }
 }

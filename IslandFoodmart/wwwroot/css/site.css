@@ -121,7 +121,7 @@ h1 {
     transition: all 0.2s ease;
     .bg_links
 
-{
+
     width: $size;
     height: $size;
     border-radius: 100%;
@@ -154,7 +154,7 @@ h1 {
     bottom: 0;
     .icon
 
-{
+
     width: 100%;
     height: 100%;
     background-size: 20px;
@@ -171,27 +171,27 @@ h1 {
     transition: all 0.8s ease;
     .icon
 
-{
+
     background-image: url(https://rafaelalucas91.github.io/assets/codepen/link.svg);
 }
 
-}
+
 
 &.dribbble {
     transition: all 0.3s ease;
     .icon
 
-{
+
     background-image: url(https://rafaelalucas91.github.io/assets/codepen/dribbble.svg);
 }
 
-}
+
 
 &.linkedin {
     transition: all 0.8s ease;
     .icon
 
-{
+
     background-image: url(https://rafaelalucas91.github.io/assets/codepen/linkedin.svg);
 }
 

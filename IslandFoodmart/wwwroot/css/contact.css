@@ -12,7 +12,7 @@ body
 {
     position: relative;
     width: 100%;
-    padding: 40px 10px;
+    margin-top: 20px;
 }
 
 .contactus .title
@@ -35,13 +35,18 @@ body
 .map 
 {
     grid-area: map;
+    background-color: white;
 }
 
 .contact {
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 20px;
+}
+
+.form {
     background-color: white;
 }
+
 
 .box {
     position: relative;
@@ -116,4 +121,47 @@ body
     font-weight: 500;
     cursor: pointer;
     padding: 10px 15px;
+}
+
+.info {
+    background: -webkit-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+}
+
+.info h3 {
+    color: white;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.info .infoBox div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+
+
+.info .infoBox div span {
+    min-width: 40px;
+    height: 40px;
+    color: white;
+    background-color: lightslategrey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.info .infoBox div p{
+    color: white;
+    font-size: 1.0em;
+}
+
+.info .infoBox div a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.0em;
 }
