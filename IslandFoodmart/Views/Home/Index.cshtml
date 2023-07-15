@@ -1,4 +1,8 @@
-﻿@{
+﻿@using IslandFoodmart.Areas.Identity.Data;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<DatabaseUser> SignInManager
+@inject UserManager<DatabaseUser> UserManager
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -54,9 +58,16 @@
     <div class="card">
 
         <div class="icon"><i class="material-icons md-36">face</i></div>
-        <p class="title">My Foodmart Account</p>
-        <p class="text">Click here to go to your account page.</p>
-
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <a class="title" asp-area="Identity" asp-page="/Account/Manage/Index">My Foodmart Account</a>
+            <a class="text" asp-area="Identity" asp-page="/Account/Manage/Index">Click here to go to your account page</a>
+        }
+        else
+        {
+            <a class="title" asp-area="Identity" asp-page="/Account/Login">My Foodmart Account</a>
+            <a class="text" asp-area="Identity" asp-page="/Account/Login">Click here to go to your account page</a>
+        }
     </div>
     <!-- end card -->
     <!-- card -->
@@ -72,8 +83,8 @@
     <div class="card">
 
         <div class="icon"><i class="material-icons md-36">alternate_email</i></div>
-        <p class="title">Contact Us</p>
-        <p class="text">Click to view our contact info so you can reach out!</p>
+        <a class="title" asp-area="" asp-controller="Home" asp-action="ContactUs" >Contact Us</a>
+        <a class="text" asp-area="" asp-controller="Home" asp-action="ContactUs" >Click to view our contact info so you can reach out!</a>
 
     </div>
     <!-- end card -->
