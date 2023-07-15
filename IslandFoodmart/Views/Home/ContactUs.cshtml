@@ -1,6 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Contact Us";
-}
+﻿@using IslandFoodmart.Areas.Identity.Data;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<DatabaseUser> SignInManager
+@inject UserManager<DatabaseUser> UserManager
 
 <!DOCTYPE html>
 <html>
@@ -19,29 +20,57 @@
             <div class="contact form">
                 <h3>Get in touch</h3>
                 <form>
+
                     <div class="formBox">
                         <div class="row50">
-                            <div class="inputBox">
-                                <span>First Name</span>
-                                <input type="text" placeholder="Jane">
-                            </div>
-                            <div class="inputBox">
-                                <span>Last Name</span>
-                                <input type="text" placeholder="Doe">
-                            </div>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <div class="inputBox">
+                                    <span>First Name</span>
+                                    <input type="text" value="@UserManager.GetUserAsync(User).Result.FirstName">
+                                </div>
+                                <div class="inputBox">
+                                    <span>Last Name</span>
+                                    <input type="text" value="@UserManager.GetUserAsync(User).Result.LastName">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="inputBox">
+                                    <span>First Name</span>
+                                    <input type="text" placeholder="Jane">
+                                </div>
+                                <div class="inputBox">
+                                    <span>Last Name</span>
+                                    <input type="text" placeholder="Doe">
+                                </div>
+                            }
                         </div>
                     
                         <div class="row50">
-                            <div class="inputBox">
-                                <span>Email</span>
-                                <input type="text" placeholder="janedoe@mail.com">
-                            </div>
-                            <div class="inputBox">
-                                <span>Mobile</span>
-                                <input type="text" placeholder="012 345 6789">
-                            </div>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <div class="inputBox">
+                                    <span>Email</span>
+                                    <input type="text" placeholder="janedoe@email.com" value="@UserManager.GetUserAsync(User).Result.Email">
+                                </div>
+                                <div class="inputBox">
+                                    <span>Mobile</span>
+                                    <input type="text" placeholder="012 345 6789" value="@UserManager.GetUserAsync(User).Result.PhoneNumber">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="inputBox">
+                                    <span>Email</span>
+                                    <input type="text" placeholder="janedoe@email.com">
+                                </div>
+                                <div class="inputBox">
+                                    <span>Mobile</span>
+                                    <input type="text" placeholder="012 345 6789">
+                                </div>
+                            }
                         </div>
-                    
                         <div class="row100">
                             <div class="inputBox">
                                 <span>Message</span>

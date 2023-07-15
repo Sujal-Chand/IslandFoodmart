@@ -20,6 +20,11 @@ namespace IslandFoodmart.Areas.Identity.Data
 
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
         }
+        public DbSet<IslandFoodmart.Models.Category>? Category { get; set; }
+        public DbSet<IslandFoodmart.Models.Payment>? Payment { get; set; }
+        public DbSet<IslandFoodmart.Models.Product>? Product { get; set; }
+        public DbSet<IslandFoodmart.Models.ShoppingCart>? ShoppingCart { get; set; }
+        public DbSet<IslandFoodmart.Models.ShoppingOrder>? ShoppingOrder { get; set; }
     }
     public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<DatabaseUser>
     {

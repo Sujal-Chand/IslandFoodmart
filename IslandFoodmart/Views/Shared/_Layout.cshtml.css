@@ -6,12 +6,13 @@
   color: salmon;
   margin-left: 1em;
 }
+
 .dropdown-item:hover {
   background-color: lightgreen;
   color: #fff;
 }
 .dropdown .dropdown-menu {
-  display: none;
+  display:none;
 }
 .dropdown:hover > .dropdown-menu,
 .dropend:hover > .dropdown-menu {
@@ -26,7 +27,6 @@
     left: 100%;
   }
   .dropend .dropdown-toggle {
-    margin-left: 0.5em;
   }
 }
 
