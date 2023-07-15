@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using IslandFoodmart.Areas.Identity.Data;
@@ -30,7 +31,7 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account.Manage
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string Username { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -56,6 +57,16 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "First Name")]
+            public string firstName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Last Name")]
+            public string lastName { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -66,10 +77,13 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-            Username = userName;
+            Email = userName;
+           
 
             Input = new InputModel
             {
+                firstName = user.FirstName, 
+                lastName = user.LastName,
                 PhoneNumber = phoneNumber
             };
         }
@@ -111,6 +125,15 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.firstName != user.FirstName)
+            {
+                user.FirstName = Input.firstName;
+            }
+            if (Input.lastName != user.LastName)
+            {
+                user.LastName = Input.lastName;
+            }
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
