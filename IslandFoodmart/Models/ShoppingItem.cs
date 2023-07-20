@@ -3,12 +3,11 @@ using MessagePack;
 
 namespace IslandFoodmart.Models
 {
-    public class ShoppingCart
+    public class ShoppingItem
     {
         public int ShoppingCartID { get; set; }
+        public int ProductID { get; set; }
         public int Quantity { get; set; }
-        public int TotalPrice { get; set; }
-        public ICollection<DatabaseUser> DatabaseUser { get; set; }
-        public ICollection<Product> Product { get; set; }
+       
     }
 }

@@ -1,12 +1,18 @@
-﻿namespace IslandFoodmart.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IslandFoodmart.Models
 {
     public class Product
     {
+        [Key]
         public int ProductID { get; set; }
-        public string ProductName { get; set; }
-        public string ProductImage { get; set; }
-        public int ProductPrice { get; set; }
+		public int CategoryID { get; set; }
+        [Required]
+		public string ProductName { get; set; }
+        public string ImagePath { get; set; }
+        [Required]
+        public decimal ProductPrice { get; set; }
         public int ProductStock { get; set; }
-        public ICollection<Category> Category { get; set; }
+        public Category Category  { get; set; }
     }
 }

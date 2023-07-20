@@ -1,15 +1,16 @@
 ﻿using IslandFoodmart.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace IslandFoodmart.Models
 {
     public class ShoppingOrder
     {
-        public int ShoppingOrderID { get; set; }
+        [Key]
+        public int ShoppingCartID { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime PickupDate { get; set; }
+        public decimal TotalPrice { get; set; }
 
-        public ICollection<DatabaseUser> DatabaseUser { get; set; }
-        public ICollection<ShoppingCart> ShoppingCart { get; set; }
-        public ICollection<Payment> Payment { get; set; }
+        public ShoppingItem ShoppingItem { get; set; }
     }
 }
