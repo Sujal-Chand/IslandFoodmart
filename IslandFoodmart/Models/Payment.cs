@@ -5,10 +5,11 @@ namespace IslandFoodmart.Models
 {
     public class Payment
     {
-        public int PaymentID { get; set; }
+        [Key]
+        public int ShoppingOrderID { get; set; }
         public decimal PaymentAmount { get; set; }
         public string PaymentMethod { get; set; }
         public DateTime PaymentDate { get; set; }
-        public ICollection<DatabaseUser> DatabaseUser { get; set; }
+        public ShoppingOrder ShoppingOrder { get; set; }
     }
 }

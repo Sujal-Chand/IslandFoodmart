@@ -22,9 +22,8 @@ namespace IslandFoodmart.Views
         // GET: Products
         public async Task<IActionResult> Index()
         {
-              return _context.Product != null ? 
-                          View(await _context.Product.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Product'  is null.");
+            var applicationDbContext = _context.Product.Include(p => p.Category);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -36,6 +35,7 @@ namespace IslandFoodmart.Views
             }
 
             var product = await _context.Product
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.ProductID == id);
             if (product == null)
             {
@@ -48,6 +48,7 @@ namespace IslandFoodmart.Views
         // GET: Products/Create
         public IActionResult Create()
         {
+            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryID");
             return View();
         }
 
@@ -56,7 +57,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,ProductName,ProductImage,ProductPrice,ProductStock")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductID,CategoryID,ProductName,ImagePath,ProductPrice,ProductStock")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +65,7 @@ namespace IslandFoodmart.Views
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryID", product.CategoryID);
             return View(product);
         }
 
@@ -80,6 +82,7 @@ namespace IslandFoodmart.Views
             {
                 return NotFound();
             }
+            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryID", product.CategoryID);
             return View(product);
         }
 
@@ -88,7 +91,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductID,ProductName,ProductImage,ProductPrice,ProductStock")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductID,CategoryID,ProductName,ImagePath,ProductPrice,ProductStock")] Product product)
         {
             if (id != product.ProductID)
             {
@@ -115,6 +118,7 @@ namespace IslandFoodmart.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryID", product.CategoryID);
             return View(product);
         }
 
@@ -127,6 +131,7 @@ namespace IslandFoodmart.Views
             }
 
             var product = await _context.Product
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.ProductID == id);
             if (product == null)
             {

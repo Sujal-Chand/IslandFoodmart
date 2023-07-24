@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IslandFoodmart
 {
-    public class 
+    public class Program
 
     {
         public static async Task Main(string[] args)

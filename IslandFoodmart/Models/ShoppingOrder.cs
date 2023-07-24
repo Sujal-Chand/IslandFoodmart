@@ -6,11 +6,14 @@ namespace IslandFoodmart.Models
     public class ShoppingOrder
     {
         [Key]
-        public int ShoppingCartID { get; set; }
+        public int ShoppingOrderID { get; set; }
+        public int Id { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime PickupDate { get; set; }
         public decimal TotalPrice { get; set; }
 
-        public ShoppingItem ShoppingItem { get; set; }
+        public ICollection<ShoppingItem> ShoppingItems { get; set; }
+        public DatabaseUser DatabaseUser { get; set; }
+        public Payment Payment { get; set; }
     }
 }

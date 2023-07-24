@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace IslandFoodmart.Views
 {
-    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -48,7 +46,6 @@ namespace IslandFoodmart.Views
         }
 
         // GET: Categories/Create
-        [Authorize(Roles ="Admin")]
         public IActionResult Create()
         {
             return View();
@@ -61,7 +58,7 @@ namespace IslandFoodmart.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CategoryID,CategoryName")] Category category)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
@@ -71,7 +68,6 @@ namespace IslandFoodmart.Views
         }
 
         // GET: Categories/Edit/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Category == null)
@@ -123,7 +119,6 @@ namespace IslandFoodmart.Views
         }
 
         // GET: Categories/Delete/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Category == null)

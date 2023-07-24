@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.PaymentDate)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShoppingOrder)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,9 +40,12 @@
                 @Html.DisplayFor(modelItem => item.PaymentDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PaymentID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PaymentID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PaymentID">Delete</a>
+                @Html.DisplayFor(modelItem => item.ShoppingOrder.ShoppingOrderID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ShoppingOrderID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ShoppingOrderID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ShoppingOrderID">Delete</a>
             </td>
         </tr>
 }

@@ -10,90 +10,90 @@ using IslandFoodmart.Models;
 
 namespace IslandFoodmart.Views
 {
-    public class PaymentsController : Controller
+    public class ShoppingItemsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PaymentsController(ApplicationDbContext context)
+        public ShoppingItemsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Payments
+        // GET: ShoppingItems
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Payment.Include(p => p.ShoppingOrder);
+            var applicationDbContext = _context.ShoppingCart.Include(s => s.ShoppingOrder);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Payments/Details/5
+        // GET: ShoppingItems/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Payment == null)
+            if (id == null || _context.ShoppingCart == null)
             {
                 return NotFound();
             }
 
-            var payment = await _context.Payment
-                .Include(p => p.ShoppingOrder)
-                .FirstOrDefaultAsync(m => m.ShoppingOrderID == id);
-            if (payment == null)
+            var shoppingItem = await _context.ShoppingCart
+                .Include(s => s.ShoppingOrder)
+                .FirstOrDefaultAsync(m => m.ShoppingItemID == id);
+            if (shoppingItem == null)
             {
                 return NotFound();
             }
 
-            return View(payment);
+            return View(shoppingItem);
         }
 
-        // GET: Payments/Create
+        // GET: ShoppingItems/Create
         public IActionResult Create()
         {
             ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID");
             return View();
         }
 
-        // POST: Payments/Create
+        // POST: ShoppingItems/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShoppingOrderID,PaymentAmount,PaymentMethod,PaymentDate")] Payment payment)
+        public async Task<IActionResult> Create([Bind("ShoppingItemID,ShoppingOrderID,Id,ProductID,Quantity")] ShoppingItem shoppingItem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(payment);
+                _context.Add(shoppingItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", payment.ShoppingOrderID);
-            return View(payment);
+            ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", shoppingItem.ShoppingOrderID);
+            return View(shoppingItem);
         }
 
-        // GET: Payments/Edit/5
+        // GET: ShoppingItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Payment == null)
+            if (id == null || _context.ShoppingCart == null)
             {
                 return NotFound();
             }
 
-            var payment = await _context.Payment.FindAsync(id);
-            if (payment == null)
+            var shoppingItem = await _context.ShoppingCart.FindAsync(id);
+            if (shoppingItem == null)
             {
                 return NotFound();
             }
-            ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", payment.ShoppingOrderID);
-            return View(payment);
+            ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", shoppingItem.ShoppingOrderID);
+            return View(shoppingItem);
         }
 
-        // POST: Payments/Edit/5
+        // POST: ShoppingItems/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ShoppingOrderID,PaymentAmount,PaymentMethod,PaymentDate")] Payment payment)
+        public async Task<IActionResult> Edit(int id, [Bind("ShoppingItemID,ShoppingOrderID,Id,ProductID,Quantity")] ShoppingItem shoppingItem)
         {
-            if (id != payment.ShoppingOrderID)
+            if (id != shoppingItem.ShoppingItemID)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace IslandFoodmart.Views
             {
                 try
                 {
-                    _context.Update(payment);
+                    _context.Update(shoppingItem);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PaymentExists(payment.ShoppingOrderID))
+                    if (!ShoppingItemExists(shoppingItem.ShoppingItemID))
                     {
                         return NotFound();
                     }
@@ -118,51 +118,51 @@ namespace IslandFoodmart.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", payment.ShoppingOrderID);
-            return View(payment);
+            ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", shoppingItem.ShoppingOrderID);
+            return View(shoppingItem);
         }
 
-        // GET: Payments/Delete/5
+        // GET: ShoppingItems/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Payment == null)
+            if (id == null || _context.ShoppingCart == null)
             {
                 return NotFound();
             }
 
-            var payment = await _context.Payment
-                .Include(p => p.ShoppingOrder)
-                .FirstOrDefaultAsync(m => m.ShoppingOrderID == id);
-            if (payment == null)
+            var shoppingItem = await _context.ShoppingCart
+                .Include(s => s.ShoppingOrder)
+                .FirstOrDefaultAsync(m => m.ShoppingItemID == id);
+            if (shoppingItem == null)
             {
                 return NotFound();
             }
 
-            return View(payment);
+            return View(shoppingItem);
         }
 
-        // POST: Payments/Delete/5
+        // POST: ShoppingItems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Payment == null)
+            if (_context.ShoppingCart == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Payment'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.ShoppingCart'  is null.");
             }
-            var payment = await _context.Payment.FindAsync(id);
-            if (payment != null)
+            var shoppingItem = await _context.ShoppingCart.FindAsync(id);
+            if (shoppingItem != null)
             {
-                _context.Payment.Remove(payment);
+                _context.ShoppingCart.Remove(shoppingItem);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PaymentExists(int id)
+        private bool ShoppingItemExists(int id)
         {
-          return (_context.Payment?.Any(e => e.ShoppingOrderID == id)).GetValueOrDefault();
+          return (_context.ShoppingCart?.Any(e => e.ShoppingItemID == id)).GetValueOrDefault();
         }
     }
 }
