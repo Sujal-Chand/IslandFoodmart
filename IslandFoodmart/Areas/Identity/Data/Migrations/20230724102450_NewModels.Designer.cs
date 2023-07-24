@@ -4,6 +4,7 @@ using IslandFoodmart.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IslandFoodmart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230724102450_NewModels")]
+    partial class NewModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,6 +175,9 @@ namespace IslandFoodmart.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingItemID"), 1L, 1);
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
@@ -197,6 +202,12 @@ namespace IslandFoodmart.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingOrderID"), 1L, 1);
 
+                    b.Property<string>("DatabaseUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -206,11 +217,9 @@ namespace IslandFoodmart.Data.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ShoppingOrderID");
+
+                    b.HasIndex("DatabaseUserId");
 
                     b.ToTable("ShoppingOrder");
                 });
@@ -381,6 +390,15 @@ namespace IslandFoodmart.Data.Migrations
                     b.Navigation("ShoppingOrder");
                 });
 
+            modelBuilder.Entity("IslandFoodmart.Models.ShoppingOrder", b =>
+                {
+                    b.HasOne("IslandFoodmart.Areas.Identity.Data.DatabaseUser", "DatabaseUser")
+                        .WithMany("ShoppingOrders")
+                        .HasForeignKey("DatabaseUserId");
+
+                    b.Navigation("DatabaseUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -430,6 +448,11 @@ namespace IslandFoodmart.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("IslandFoodmart.Areas.Identity.Data.DatabaseUser", b =>
+                {
+                    b.Navigation("ShoppingOrders");
                 });
 
             modelBuilder.Entity("IslandFoodmart.Models.Category", b =>

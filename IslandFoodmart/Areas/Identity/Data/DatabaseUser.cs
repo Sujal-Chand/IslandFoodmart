@@ -11,6 +11,5 @@ namespace IslandFoodmart.Areas.Identity.Data
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public ICollection<ShoppingOrder> ShoppingOrders { get; set; }
     }
 }

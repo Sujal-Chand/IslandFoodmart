@@ -22,19 +22,19 @@ namespace IslandFoodmart.Views
         // GET: ShoppingItems
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ShoppingCart.Include(s => s.ShoppingOrder);
+            var applicationDbContext = _context.ShoppingItem.Include(s => s.ShoppingOrder);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: ShoppingItems/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.ShoppingCart == null)
+            if (id == null || _context.ShoppingItem == null)
             {
                 return NotFound();
             }
 
-            var shoppingItem = await _context.ShoppingCart
+            var shoppingItem = await _context.ShoppingItem
                 .Include(s => s.ShoppingOrder)
                 .FirstOrDefaultAsync(m => m.ShoppingItemID == id);
             if (shoppingItem == null)
@@ -57,7 +57,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShoppingItemID,ShoppingOrderID,Id,ProductID,Quantity")] ShoppingItem shoppingItem)
+        public async Task<IActionResult> Create([Bind("ShoppingItemID,ShoppingOrderID,ProductID,Quantity")] ShoppingItem shoppingItem)
         {
             if (ModelState.IsValid)
             {
@@ -72,12 +72,12 @@ namespace IslandFoodmart.Views
         // GET: ShoppingItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.ShoppingCart == null)
+            if (id == null || _context.ShoppingItem == null)
             {
                 return NotFound();
             }
 
-            var shoppingItem = await _context.ShoppingCart.FindAsync(id);
+            var shoppingItem = await _context.ShoppingItem.FindAsync(id);
             if (shoppingItem == null)
             {
                 return NotFound();
@@ -91,7 +91,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ShoppingItemID,ShoppingOrderID,Id,ProductID,Quantity")] ShoppingItem shoppingItem)
+        public async Task<IActionResult> Edit(int id, [Bind("ShoppingItemID,ShoppingOrderID,ProductID,Quantity")] ShoppingItem shoppingItem)
         {
             if (id != shoppingItem.ShoppingItemID)
             {
@@ -125,12 +125,12 @@ namespace IslandFoodmart.Views
         // GET: ShoppingItems/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.ShoppingCart == null)
+            if (id == null || _context.ShoppingItem == null)
             {
                 return NotFound();
             }
 
-            var shoppingItem = await _context.ShoppingCart
+            var shoppingItem = await _context.ShoppingItem
                 .Include(s => s.ShoppingOrder)
                 .FirstOrDefaultAsync(m => m.ShoppingItemID == id);
             if (shoppingItem == null)
@@ -146,14 +146,14 @@ namespace IslandFoodmart.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.ShoppingCart == null)
+            if (_context.ShoppingItem == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.ShoppingCart'  is null.");
             }
-            var shoppingItem = await _context.ShoppingCart.FindAsync(id);
+            var shoppingItem = await _context.ShoppingItem.FindAsync(id);
             if (shoppingItem != null)
             {
-                _context.ShoppingCart.Remove(shoppingItem);
+                _context.ShoppingItem.Remove(shoppingItem);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +162,7 @@ namespace IslandFoodmart.Views
 
         private bool ShoppingItemExists(int id)
         {
-          return (_context.ShoppingCart?.Any(e => e.ShoppingItemID == id)).GetValueOrDefault();
+          return (_context.ShoppingItem?.Any(e => e.ShoppingItemID == id)).GetValueOrDefault();
         }
     }
 }

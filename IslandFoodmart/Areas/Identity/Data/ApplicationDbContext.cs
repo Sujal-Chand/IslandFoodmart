@@ -23,7 +23,7 @@ namespace IslandFoodmart.Areas.Identity.Data
         public DbSet<IslandFoodmart.Models.Category>? Category { get; set; }
         public DbSet<IslandFoodmart.Models.Payment>? Payment { get; set; }
         public DbSet<IslandFoodmart.Models.Product>? Product { get; set; }
-        public DbSet<IslandFoodmart.Models.ShoppingItem>? ShoppingCart { get; set; }
+        public DbSet<IslandFoodmart.Models.ShoppingItem>? ShoppingItem { get; set; }
         public DbSet<IslandFoodmart.Models.ShoppingOrder>? ShoppingOrder { get; set; }
     }
     public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<DatabaseUser>
@@ -31,6 +31,7 @@ namespace IslandFoodmart.Areas.Identity.Data
         public void Configure(EntityTypeBuilder<DatabaseUser> builder) 
         {
             builder.Property(u => u.FirstName).HasMaxLength(20);
+            builder.Property(u => u.LastName).HasMaxLength(20);
         }
     }
 }
