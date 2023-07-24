@@ -1,4 +1,5 @@
 ﻿using IslandFoodmart.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace IslandFoodmart.Models
 {
