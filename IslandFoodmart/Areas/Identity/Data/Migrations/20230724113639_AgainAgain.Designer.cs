@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IslandFoodmart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230724103718_ModelAgain")]
-    partial class ModelAgain
+    [Migration("20230724113639_AgainAgain")]
+    partial class AgainAgain
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,7 +50,8 @@ namespace IslandFoodmart.Data.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -188,7 +189,7 @@ namespace IslandFoodmart.Data.Migrations
 
                     b.HasIndex("ShoppingOrderID");
 
-                    b.ToTable("ShoppingCart");
+                    b.ToTable("ShoppingItem");
                 });
 
             modelBuilder.Entity("IslandFoodmart.Models.ShoppingOrder", b =>
@@ -205,7 +206,7 @@ namespace IslandFoodmart.Data.Migrations
                     b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal>("PriceTotal")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserName")

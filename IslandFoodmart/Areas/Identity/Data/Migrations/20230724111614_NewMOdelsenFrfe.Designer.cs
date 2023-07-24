@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IslandFoodmart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230724100101_NewModel")]
-    partial class NewModel
+    [Migration("20230724111614_NewMOdelsenFrfe")]
+    partial class NewMOdelsenFrfe
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,7 +50,8 @@ namespace IslandFoodmart.Data.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -175,9 +176,6 @@ namespace IslandFoodmart.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingItemID"), 1L, 1);
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
@@ -191,7 +189,7 @@ namespace IslandFoodmart.Data.Migrations
 
                     b.HasIndex("ShoppingOrderID");
 
-                    b.ToTable("ShoppingCart");
+                    b.ToTable("ShoppingItem");
                 });
 
             modelBuilder.Entity("IslandFoodmart.Models.ShoppingOrder", b =>
@@ -202,12 +200,6 @@ namespace IslandFoodmart.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingOrderID"), 1L, 1);
 
-                    b.Property<string>("DatabaseUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -217,9 +209,11 @@ namespace IslandFoodmart.Data.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("ShoppingOrderID");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("DatabaseUserId");
+                    b.HasKey("ShoppingOrderID");
 
                     b.ToTable("ShoppingOrder");
                 });
@@ -390,15 +384,6 @@ namespace IslandFoodmart.Data.Migrations
                     b.Navigation("ShoppingOrder");
                 });
 
-            modelBuilder.Entity("IslandFoodmart.Models.ShoppingOrder", b =>
-                {
-                    b.HasOne("IslandFoodmart.Areas.Identity.Data.DatabaseUser", "DatabaseUser")
-                        .WithMany("ShoppingOrders")
-                        .HasForeignKey("DatabaseUserId");
-
-                    b.Navigation("DatabaseUser");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -448,11 +433,6 @@ namespace IslandFoodmart.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("IslandFoodmart.Areas.Identity.Data.DatabaseUser", b =>
-                {
-                    b.Navigation("ShoppingOrders");
                 });
 
             modelBuilder.Entity("IslandFoodmart.Models.Category", b =>

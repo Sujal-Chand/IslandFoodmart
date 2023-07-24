@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IslandFoodmart.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230715141312_FoodmartModels")]
-    partial class FoodmartModels
+    [Migration("20230724111943_Model")]
+    partial class Model
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,7 +50,8 @@ namespace IslandFoodmart.Data.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -69,9 +70,6 @@ namespace IslandFoodmart.Data.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PaymentID")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -80,12 +78,6 @@ namespace IslandFoodmart.Data.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ShoppingCartID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ShoppingOrderID")
-                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -104,12 +96,6 @@ namespace IslandFoodmart.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("PaymentID");
-
-                    b.HasIndex("ShoppingCartID");
-
-                    b.HasIndex("ShoppingOrderID");
-
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
@@ -125,26 +111,18 @@ namespace IslandFoodmart.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductID")
-                        .HasColumnType("int");
-
                     b.HasKey("CategoryID");
-
-                    b.HasIndex("ProductID");
 
                     b.ToTable("Category");
                 });
 
             modelBuilder.Entity("IslandFoodmart.Models.Payment", b =>
                 {
-                    b.Property<int>("PaymentID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ShoppingOrderID")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"), 1L, 1);
-
-                    b.Property<int>("PaymentAmount")
-                        .HasColumnType("int");
+                    b.Property<decimal>("PaymentAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -153,12 +131,7 @@ namespace IslandFoodmart.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShoppingOrderID")
-                        .HasColumnType("int");
-
-                    b.HasKey("PaymentID");
-
-                    b.HasIndex("ShoppingOrderID");
+                    b.HasKey("ShoppingOrderID");
 
                     b.ToTable("Payment");
                 });
@@ -171,7 +144,10 @@ namespace IslandFoodmart.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"), 1L, 1);
 
-                    b.Property<string>("ProductImage")
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -179,44 +155,41 @@ namespace IslandFoodmart.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductPrice")
-                        .HasColumnType("int");
+                    b.Property<decimal>("ProductPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductStock")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ShoppingCartID")
-                        .HasColumnType("int");
-
                     b.HasKey("ProductID");
 
-                    b.HasIndex("ShoppingCartID");
+                    b.HasIndex("CategoryID");
 
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("IslandFoodmart.Models.ShoppingCart", b =>
+            modelBuilder.Entity("IslandFoodmart.Models.ShoppingItem", b =>
                 {
-                    b.Property<int>("ShoppingCartID")
+                    b.Property<int>("ShoppingItemID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingCartID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingItemID"), 1L, 1);
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ShoppingOrderID")
+                    b.Property<int>("ShoppingOrderID")
                         .HasColumnType("int");
 
-                    b.Property<int>("TotalPrice")
-                        .HasColumnType("int");
-
-                    b.HasKey("ShoppingCartID");
+                    b.HasKey("ShoppingItemID");
 
                     b.HasIndex("ShoppingOrderID");
 
-                    b.ToTable("ShoppingCart");
+                    b.ToTable("ShoppingItem");
                 });
 
             modelBuilder.Entity("IslandFoodmart.Models.ShoppingOrder", b =>
@@ -232,6 +205,13 @@ namespace IslandFoodmart.Data.Migrations
 
                     b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ShoppingOrderID");
 
@@ -371,47 +351,37 @@ namespace IslandFoodmart.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("IslandFoodmart.Areas.Identity.Data.DatabaseUser", b =>
-                {
-                    b.HasOne("IslandFoodmart.Models.Payment", null)
-                        .WithMany("DatabaseUser")
-                        .HasForeignKey("PaymentID");
-
-                    b.HasOne("IslandFoodmart.Models.ShoppingCart", null)
-                        .WithMany("DatabaseUser")
-                        .HasForeignKey("ShoppingCartID");
-
-                    b.HasOne("IslandFoodmart.Models.ShoppingOrder", null)
-                        .WithMany("DatabaseUser")
-                        .HasForeignKey("ShoppingOrderID");
-                });
-
-            modelBuilder.Entity("IslandFoodmart.Models.Category", b =>
-                {
-                    b.HasOne("IslandFoodmart.Models.Product", null)
-                        .WithMany("Category")
-                        .HasForeignKey("ProductID");
-                });
-
             modelBuilder.Entity("IslandFoodmart.Models.Payment", b =>
                 {
-                    b.HasOne("IslandFoodmart.Models.ShoppingOrder", null)
-                        .WithMany("Payment")
-                        .HasForeignKey("ShoppingOrderID");
+                    b.HasOne("IslandFoodmart.Models.ShoppingOrder", "ShoppingOrder")
+                        .WithOne("Payment")
+                        .HasForeignKey("IslandFoodmart.Models.Payment", "ShoppingOrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShoppingOrder");
                 });
 
             modelBuilder.Entity("IslandFoodmart.Models.Product", b =>
                 {
-                    b.HasOne("IslandFoodmart.Models.ShoppingCart", null)
-                        .WithMany("Product")
-                        .HasForeignKey("ShoppingCartID");
+                    b.HasOne("IslandFoodmart.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("IslandFoodmart.Models.ShoppingCart", b =>
+            modelBuilder.Entity("IslandFoodmart.Models.ShoppingItem", b =>
                 {
-                    b.HasOne("IslandFoodmart.Models.ShoppingOrder", null)
-                        .WithMany("ShoppingCart")
-                        .HasForeignKey("ShoppingOrderID");
+                    b.HasOne("IslandFoodmart.Models.ShoppingOrder", "ShoppingOrder")
+                        .WithMany("ShoppingItems")
+                        .HasForeignKey("ShoppingOrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShoppingOrder");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -465,30 +435,17 @@ namespace IslandFoodmart.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("IslandFoodmart.Models.Payment", b =>
+            modelBuilder.Entity("IslandFoodmart.Models.Category", b =>
                 {
-                    b.Navigation("DatabaseUser");
-                });
-
-            modelBuilder.Entity("IslandFoodmart.Models.Product", b =>
-                {
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("IslandFoodmart.Models.ShoppingCart", b =>
-                {
-                    b.Navigation("DatabaseUser");
-
-                    b.Navigation("Product");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("IslandFoodmart.Models.ShoppingOrder", b =>
                 {
-                    b.Navigation("DatabaseUser");
+                    b.Navigation("Payment")
+                        .IsRequired();
 
-                    b.Navigation("Payment");
-
-                    b.Navigation("ShoppingCart");
+                    b.Navigation("ShoppingItems");
                 });
 #pragma warning restore 612, 618
         }

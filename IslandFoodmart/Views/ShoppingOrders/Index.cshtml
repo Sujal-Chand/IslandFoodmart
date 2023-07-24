@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.PickupDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalPrice)
+                @Html.DisplayNameFor(model => model.PriceTotal)
             </th>
             <th></th>
         </tr>
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.PickupDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
+                @Html.DisplayFor(modelItem => item.PriceTotal)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ShoppingOrderID">Edit</a> |

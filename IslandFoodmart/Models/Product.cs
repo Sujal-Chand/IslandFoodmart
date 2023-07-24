@@ -4,7 +4,6 @@ namespace IslandFoodmart.Models
 {
     public class Product
     {
-        [Key]
         public int ProductID { get; set; }
 		public int CategoryID { get; set; }
         [Required]

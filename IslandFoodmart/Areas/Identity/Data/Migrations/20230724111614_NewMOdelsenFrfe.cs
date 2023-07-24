@@ -4,7 +4,7 @@
 
 namespace IslandFoodmart.Data.Migrations
 {
-    public partial class NewModels : Migration
+    public partial class NewMOdelsenFrfe : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -56,7 +56,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShoppingOrderID,UserName,OrderDate,PickupDate,TotalPrice")] ShoppingOrder shoppingOrder)
+        public async Task<IActionResult> Create([Bind("ShoppingOrderID,UserName,OrderDate,PickupDate,PriceTotal")] ShoppingOrder shoppingOrder)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ShoppingOrderID,UserName,OrderDate,PickupDate,TotalPrice")] ShoppingOrder shoppingOrder)
+        public async Task<IActionResult> Edit(int id, [Bind("ShoppingOrderID,UserName,OrderDate,PickupDate,PriceTotal")] ShoppingOrder shoppingOrder)
         {
             if (id != shoppingOrder.ShoppingOrderID)
             {

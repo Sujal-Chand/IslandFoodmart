@@ -148,7 +148,7 @@ namespace IslandFoodmart.Views
         {
             if (_context.ShoppingItem == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.ShoppingCart'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.ShoppingItem'  is null.");
             }
             var shoppingItem = await _context.ShoppingItem.FindAsync(id);
             if (shoppingItem != null)
