@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IslandFoodmart.Views
 {
@@ -46,6 +47,7 @@ namespace IslandFoodmart.Views
         }
 
         // GET: ShoppingItems/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID");

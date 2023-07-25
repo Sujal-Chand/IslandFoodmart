@@ -4,18 +4,16 @@ using IslandFoodmart.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace IslandFoodmart.Data.Migrations
+namespace IslandFoodmart.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230724111943_Model")]
-    partial class Model
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,7 +204,7 @@ namespace IslandFoodmart.Data.Migrations
                     b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal>("PriceTotal")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserName")

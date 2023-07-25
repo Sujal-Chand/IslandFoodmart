@@ -1,4 +1,8 @@
-﻿@model IslandFoodmart.Models.ShoppingOrder
+﻿@using IslandFoodmart.Areas.Identity.Data;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<DatabaseUser> SignInManager
+@inject UserManager<DatabaseUser> UserManager
+@model IslandFoodmart.Models.ShoppingOrder
 
 @{
     ViewData["Title"] = "Create";
@@ -14,7 +18,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
+                <input asp-for="UserName" value="@UserManager.GetUserAsync(User).Result.FirstName"  class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
