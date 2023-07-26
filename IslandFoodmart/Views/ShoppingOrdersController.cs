@@ -58,7 +58,7 @@ namespace IslandFoodmart.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ShoppingOrderID,UserName,OrderDate,PickupDate,PriceTotal")] ShoppingOrder shoppingOrder)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(shoppingOrder);
                 await _context.SaveChangesAsync();

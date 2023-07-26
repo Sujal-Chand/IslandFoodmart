@@ -1,8 +1,9 @@
 using IslandFoodmart.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace IslandFoodmart
 {
@@ -15,8 +16,11 @@ namespace IslandFoodmart
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+
+            builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //  options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddIdentity<DatabaseUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
