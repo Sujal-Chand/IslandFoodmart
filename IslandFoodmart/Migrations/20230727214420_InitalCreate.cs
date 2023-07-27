@@ -261,15 +261,17 @@ namespace IslandFoodmart.Migrations
                 name: "Payment",
                 columns: table => new
                 {
-                    ShoppingOrderID = table.Column<int>(type: "int", nullable: false),
+                    PaymentID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     PaymentAmount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     PaymentMethod = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PaymentDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    PaymentDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ShoppingOrderID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payment", x => x.ShoppingOrderID);
+                    table.PrimaryKey("PK_Payment", x => x.PaymentID);
                     table.ForeignKey(
                         name: "FK_Payment_ShoppingOrder_ShoppingOrderID",
                         column: x => x.ShoppingOrderID,
@@ -336,6 +338,12 @@ namespace IslandFoodmart.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payment_ShoppingOrderID",
+                table: "Payment",
+                column: "ShoppingOrderID",
                 unique: true);
 
             migrationBuilder.CreateIndex(

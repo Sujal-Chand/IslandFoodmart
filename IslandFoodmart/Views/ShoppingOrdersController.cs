@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace IslandFoodmart.Views
 {
     public class ShoppingOrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<DatabaseUser> _userManager;
 
-        public ShoppingOrdersController(ApplicationDbContext context)
+        public ShoppingOrdersController(ApplicationDbContext context, UserManager<DatabaseUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: ShoppingOrders
@@ -58,10 +61,22 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShoppingOrderID,UserName,OrderDate,PickupDate,PriceTotal")] ShoppingOrder shoppingOrder)
+        public async Task<IActionResult> Create([Bind("ShoppingOrderID,PickupDate,PriceTotal")] ShoppingOrder shoppingOrder)
         {
             if (!ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+                shoppingOrder.OrderDate = DateTime.Now;
+                shoppingOrder.UserName = user.FirstName;
+                var payment = new Payment
+                {
+                    ShoppingOrder = shoppingOrder,
+                    PaymentAmount = shoppingOrder.PriceTotal,
+                    PaymentMethod = "Debit",
+                    PaymentDate = shoppingOrder.OrderDate
+
+                };
+                _context.Add(payment);
                 _context.Add(shoppingOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -70,6 +85,7 @@ namespace IslandFoodmart.Views
         }
 
         // GET: ShoppingOrders/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.ShoppingOrder == null)
@@ -121,6 +137,7 @@ namespace IslandFoodmart.Views
         }
 
         // GET: ShoppingOrders/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.ShoppingOrder == null)

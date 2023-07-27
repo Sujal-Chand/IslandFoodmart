@@ -110,7 +110,8 @@ namespace IslandFoodmart.Migrations
 
             modelBuilder.Entity("IslandFoodmart.Models.Payment", b =>
                 {
-                    b.Property<int>("ShoppingOrderID")
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<decimal>("PaymentAmount")
@@ -123,7 +124,13 @@ namespace IslandFoodmart.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("ShoppingOrderID");
+                    b.Property<int>("ShoppingOrderID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PaymentID");
+
+                    b.HasIndex("ShoppingOrderID")
+                        .IsUnique();
 
                     b.ToTable("Payment");
                 });
