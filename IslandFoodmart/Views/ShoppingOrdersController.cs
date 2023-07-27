@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IslandFoodmart.Views
 {
@@ -45,6 +46,7 @@ namespace IslandFoodmart.Views
             return View(shoppingOrder);
         }
 
+        [Authorize]
         // GET: ShoppingOrders/Create
         public IActionResult Create()
         {
