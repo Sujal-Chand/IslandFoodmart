@@ -8,6 +8,8 @@ namespace IslandFoodmart.Models
         
         public int ShoppingOrderID { get; set; }
         public string UserName { get; set; }
+        [Display(Name = "Customer")]
+        public string ShoppingFirstName { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime PickupDate { get; set; }
         public decimal PriceTotal { get; set; }

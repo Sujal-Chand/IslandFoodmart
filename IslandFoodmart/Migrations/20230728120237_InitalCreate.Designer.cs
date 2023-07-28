@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IslandFoodmart.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230727214420_InitalCreate")]
+    [Migration("20230728120237_InitalCreate")]
     partial class InitalCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,6 +203,10 @@ namespace IslandFoodmart.Migrations
 
                     b.Property<decimal>("PriceTotal")
                         .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("ShoppingFirstName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserName")
                         .IsRequired()

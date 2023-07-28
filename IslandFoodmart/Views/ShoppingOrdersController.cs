@@ -24,11 +24,29 @@ namespace IslandFoodmart.Views
         }
 
         // GET: ShoppingOrders
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-              return _context.ShoppingOrder != null ? 
-                          View(await _context.ShoppingOrder.ToListAsync()) :
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user.Email == "admin@islandfoodmart.com")
+            {
+                //If user is admin: Show all orders
+                return _context.ShoppingOrder != null ? 
+                            View(await _context.ShoppingOrder.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.ShoppingOrder'  is null.");
+            }
+            else
+            {
+                //Filters and only shows placed by a signed in customer.
+                var orders = from r in _context.ShoppingOrder
+                             orderby r.UserName
+                             where r.UserName == user.UserName
+                             select r;
+                return View(orders);
+            }
+           
+            
         }
 
         // GET: ShoppingOrders/Details/5
@@ -67,7 +85,8 @@ namespace IslandFoodmart.Views
             {
                 var user = await _userManager.GetUserAsync(User);
                 shoppingOrder.OrderDate = DateTime.Now;
-                shoppingOrder.UserName = user.FirstName;
+                shoppingOrder.UserName = user.UserName;
+                shoppingOrder.ShoppingFirstName = user.FirstName;
                 var payment = new Payment
                 {
                     ShoppingOrder = shoppingOrder,

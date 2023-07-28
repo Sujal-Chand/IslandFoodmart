@@ -16,11 +16,13 @@ namespace IslandFoodmart
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
+            //Use for macOS
             builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            //  options.UseSqlServer(connectionString));
+
+            /*Use for Windows
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+             options.UseSqlServer(connectionString)); */
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddIdentity<DatabaseUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)

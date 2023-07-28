@@ -94,6 +94,8 @@ namespace IslandFoodmart.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    ShoppingFirstName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     OrderDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     PickupDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     PriceTotal = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
