@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IslandFoodmart.Models.ShoppingItem>
+@model IEnumerable<IslandFoodmart.Models.ShoppingItem>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductID)
+                @Html.DisplayNameFor(model => model.Quantity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                @Html.DisplayNameFor(model => model.Product)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ShoppingOrder)
@@ -28,10 +28,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductID)
+                @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ShoppingOrder.ShoppingOrderID)

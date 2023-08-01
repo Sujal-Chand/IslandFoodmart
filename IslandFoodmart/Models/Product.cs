@@ -13,5 +13,6 @@ namespace IslandFoodmart.Models
         public decimal ProductPrice { get; set; }
         public int ProductStock { get; set; }
         public Category Category  { get; set; }
+        public ICollection<ShoppingItem> ShoppingItems { get; set; }
     }
 }

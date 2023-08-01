@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,15 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace IslandFoodmart.Views
 {
-    public class ShoppingItemsController : Controller
+    public class ShoppingItems : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ShoppingItemsController(ApplicationDbContext context)
+        public ShoppingItems(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,7 +22,7 @@ namespace IslandFoodmart.Views
         // GET: ShoppingItems
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ShoppingItem.Include(s => s.ShoppingOrder);
+            var applicationDbContext = _context.ShoppingItem.Include(s => s.Product).Include(s => s.ShoppingOrder);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,6 +35,7 @@ namespace IslandFoodmart.Views
             }
 
             var shoppingItem = await _context.ShoppingItem
+                .Include(s => s.Product)
                 .Include(s => s.ShoppingOrder)
                 .FirstOrDefaultAsync(m => m.ShoppingItemID == id);
             if (shoppingItem == null)
@@ -47,9 +47,9 @@ namespace IslandFoodmart.Views
         }
 
         // GET: ShoppingItems/Create
-        [Authorize]
         public IActionResult Create()
         {
+            ViewData["ProductID"] = new SelectList(_context.Product, "ProductID", "ProductName");
             ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID");
             return View();
         }
@@ -61,12 +61,13 @@ namespace IslandFoodmart.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ShoppingItemID,ShoppingOrderID,ProductID,Quantity")] ShoppingItem shoppingItem)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(shoppingItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ProductID"] = new SelectList(_context.Product, "ProductID", "ProductName", shoppingItem.ProductID);
             ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", shoppingItem.ShoppingOrderID);
             return View(shoppingItem);
         }
@@ -84,6 +85,7 @@ namespace IslandFoodmart.Views
             {
                 return NotFound();
             }
+            ViewData["ProductID"] = new SelectList(_context.Product, "ProductID", "ProductName", shoppingItem.ProductID);
             ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", shoppingItem.ShoppingOrderID);
             return View(shoppingItem);
         }
@@ -120,6 +122,7 @@ namespace IslandFoodmart.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ProductID"] = new SelectList(_context.Product, "ProductID", "ProductName", shoppingItem.ProductID);
             ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", shoppingItem.ShoppingOrderID);
             return View(shoppingItem);
         }
@@ -133,6 +136,7 @@ namespace IslandFoodmart.Views
             }
 
             var shoppingItem = await _context.ShoppingItem
+                .Include(s => s.Product)
                 .Include(s => s.ShoppingOrder)
                 .FirstOrDefaultAsync(m => m.ShoppingItemID == id);
             if (shoppingItem == null)
