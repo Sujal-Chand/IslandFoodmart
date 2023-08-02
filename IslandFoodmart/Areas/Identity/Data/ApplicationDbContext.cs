@@ -13,18 +13,24 @@ namespace IslandFoodmart.Areas.Identity.Data
             : base(options)
         {
         }
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-
-
-            builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
-        }
         public DbSet<IslandFoodmart.Models.Category>? Category { get; set; }
         public DbSet<IslandFoodmart.Models.Payment>? Payment { get; set; }
         public DbSet<IslandFoodmart.Models.Product>? Product { get; set; }
         public DbSet<IslandFoodmart.Models.ShoppingItem>? ShoppingItem { get; set; }
         public DbSet<IslandFoodmart.Models.ShoppingOrder>? ShoppingOrder { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Category>().HasData(
+                new Category { CategoryID = 1, CategoryName = "Fresh Foods" },
+                new Category { CategoryID = 2, CategoryName = "Frozen Foods" },
+                new Category { CategoryID = 3, CategoryName = "Drinks" },
+                new Category { CategoryID = 4, CategoryName = "Pantry" },
+                new Category { CategoryID = 5, CategoryName = "Personal Care" });
+            base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
+        }
+      
     }
     public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<DatabaseUser>
     {
