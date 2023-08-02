@@ -50,7 +50,7 @@ namespace IslandFoodmart.Views
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryID");
+            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryName");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace IslandFoodmart.Views
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryID", product.CategoryID);
+            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryName", product.CategoryID);
             return View(product);
         }
 

@@ -40,13 +40,13 @@
                 @Html.DisplayFor(modelItem => item.ImagePath)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductPrice)
+                $@Html.DisplayFor(modelItem => item.ProductPrice)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductStock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryID)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
