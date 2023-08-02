@@ -22,10 +22,27 @@ namespace IslandFoodmart.Views
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString)
         {
-            var applicationDbContext = _context.Product.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+            if (_context.Product == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Product'  is null.");
+            }
+
+            var products = from n in _context.Product.Include(p => p.Category)
+                           select n;
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                products = products.Where(s => s.ProductName!.Contains(SearchString));
+                return View(await products.ToListAsync());
+            }
+            else
+            {
+                var applicationDbContext = _context.Product.Include(p => p.Category);
+                return View(await applicationDbContext.ToListAsync());
+            }
+          
         }
 
         // GET: Products/Details/5
