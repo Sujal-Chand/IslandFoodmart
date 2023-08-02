@@ -32,7 +32,7 @@ namespace IslandFoodmart.Views
             if (user.Email == "admin@islandfoodmart.com")
             {
                 //If user is admin: Show all orders
-                return _context.ShoppingOrder != null ? 
+                return _context.ShoppingOrder != null ?
                             View(await _context.ShoppingOrder.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.ShoppingOrder'  is null.");
             }
@@ -45,8 +45,7 @@ namespace IslandFoodmart.Views
                              select r;
                 return View(await orders.OrderByDescending(ShoppingOrder => ShoppingOrder.OrderDate).ToListAsync());
             }
-           
-            
+
         }
 
         // GET: ShoppingOrders/Details/5
