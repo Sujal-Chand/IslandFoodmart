@@ -43,7 +43,7 @@ namespace IslandFoodmart.Views
                              orderby r.UserName
                              where r.UserName == user.UserName
                              select r;
-                return View(orders);
+                return View(await orders.OrderByDescending(ShoppingOrder => ShoppingOrder.OrderDate).ToListAsync());
             }
            
             
