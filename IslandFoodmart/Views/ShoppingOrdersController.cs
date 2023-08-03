@@ -84,6 +84,11 @@ namespace IslandFoodmart.Views
             {
                 var user = await _userManager.GetUserAsync(User);
                 shoppingOrder.OrderDate = DateTime.Now;
+                if (shoppingOrder.PickupDate <= shoppingOrder.OrderDate)
+                {
+                    ModelState.AddModelError("", "Orders cannot be placed in the past.");
+                    return View(shoppingOrder);
+                }
                 shoppingOrder.UserName = user.UserName;
                 shoppingOrder.ShoppingFirstName = user.FirstName;
                 shoppingOrder.OrderStatus = Status.Incompleted;
