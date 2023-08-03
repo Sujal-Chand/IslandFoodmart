@@ -86,6 +86,7 @@ namespace IslandFoodmart.Views
                 shoppingOrder.OrderDate = DateTime.Now;
                 shoppingOrder.UserName = user.UserName;
                 shoppingOrder.ShoppingFirstName = user.FirstName;
+                shoppingOrder.OrderStatus = Status.Incompleted;
                 var payment = new Payment
                 {
                     ShoppingOrder = shoppingOrder,
@@ -124,7 +125,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ShoppingOrderID,UserName,OrderDate,PickupDate,PriceTotal")] ShoppingOrder shoppingOrder)
+        public async Task<IActionResult> Edit(int id, [Bind("ShoppingOrderID,UserName,OrderStatus,OrderDate,PickupDate,PriceTotal")] ShoppingOrder shoppingOrder)
         {
             if (id != shoppingOrder.ShoppingOrderID)
             {
