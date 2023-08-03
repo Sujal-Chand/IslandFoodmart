@@ -23,6 +23,7 @@ namespace IslandFoodmart
             /*Use for Windows
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(connectionString)); */
+            //Also Check appsettings.json to change DefaultConnection Path
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddIdentity<DatabaseUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)

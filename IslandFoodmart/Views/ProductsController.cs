@@ -35,7 +35,7 @@ namespace IslandFoodmart.Views
             //Select from SearchString -- SearchString is also used for finding products of different categories through an or statement.
             if (!String.IsNullOrEmpty(SearchString))
             {
-                products = products.Where(pn => pn.ProductName!.Contains(SearchString) || pn.Category.CategoryName!.Contains(SearchString));
+                products = products.Where(ss => ss.ProductName!.Contains(SearchString) || ss.Category.CategoryName!.Contains(SearchString));
                 return View(await products.ToListAsync());
             }
             //If the SearchString is left empty all products will be returned.
