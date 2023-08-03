@@ -27,17 +27,21 @@
                             Shop
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Fresh Foods</a></li>
-                            <li><a class="dropdown-item" href="#">Frozen Foods</a></li>
-                            <li><a class="dropdown-item" href="#">Drinks</a></li>
-                            <li><a class="dropdown-item" href="#">Personal Care</a></li>
+                            <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Fresh Foods" class="dropdown-item" style="border: none;">Fresh Foods</button></form></li>
+                            <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Frozen Foods" class="dropdown-item" style="border: none;">Frozen Foods</button></form></li>
+                            <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Drinks" class="dropdown-item" style="border: none;">Drinks</button></form></li>
+                            <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Pantry" class="dropdown-item" style="border: none;">Pantry</button></form></li>
+                            <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Personal Care" class="dropdown-item" style="border: none;">Personal Care</button></form></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li class="nav-item dropend">
-                                <a class="nav-link" style="color : red;" asp-area="" asp-controller="Products" asp-action="Index">
-                                    Shop All
-                                </a>
+                                <form asp-controller="Products" asp-action="Index" method="get">
+                                    <button name="SearchString" value="" class="nav-link" style="color : red; border: none; background-color : white;">
+                                        Shop All
+                                    </button>
+                                </form>
+
                             </li>
                         </ul>
                     </li>

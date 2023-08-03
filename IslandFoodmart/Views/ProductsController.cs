@@ -29,14 +29,16 @@ namespace IslandFoodmart.Views
                 return Problem("Entity set 'ApplicationDbContext.Product'  is null.");
             }
 
+            //Includes the fields from Categories (CategoryID and CategoryName).
             var products = from n in _context.Product.Include(p => p.Category)
                            select n;
-
+            //Select from SearchString -- SearchString is also used for finding products of different categories through an or statement.
             if (!String.IsNullOrEmpty(SearchString))
             {
-                products = products.Where(s => s.ProductName!.Contains(SearchString));
+                products = products.Where(pn => pn.ProductName!.Contains(SearchString) || pn.Category.CategoryName!.Contains(SearchString));
                 return View(await products.ToListAsync());
             }
+            //If the SearchString is left empty all products will be returned.
             else
             {
                 var applicationDbContext = _context.Product.Include(p => p.Category);
@@ -65,6 +67,7 @@ namespace IslandFoodmart.Views
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryName");
@@ -103,7 +106,7 @@ namespace IslandFoodmart.Views
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryID", product.CategoryID);
+            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryName", product.CategoryID);
             return View(product);
         }
 
@@ -112,6 +115,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ProductID,CategoryID,ProductName,ImagePath,ProductPrice,ProductStock")] Product product)
         {
             if (id != product.ProductID)
@@ -139,7 +143,7 @@ namespace IslandFoodmart.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryID", product.CategoryID);
+            ViewData["CategoryID"] = new SelectList(_context.Category, "CategoryID", "CategoryName", product.CategoryID);
             return View(product);
         }
 

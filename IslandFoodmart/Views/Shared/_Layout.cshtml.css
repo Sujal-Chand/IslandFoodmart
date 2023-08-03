@@ -7,6 +7,9 @@
   margin-left: 1em;
 }
 
+.dropdown-item {
+    background-color: white;
+}
 .dropdown-item:hover {
   background-color: lightgreen;
   color: #fff;
