@@ -10,7 +10,7 @@ const dotIndicators = dots.querySelectorAll('.dot');
 const prevBtn = document.querySelector('.carousel-prev');
 const nextBtn = document.querySelector('.carousel-next');
 const images = document.querySelectorAll('.carousel img');
-
+let MySearch = "";
 let currentIndex = 0;
 const maxIndex = images.length - 1;
 let imageWidth = images[0].clientWidth;

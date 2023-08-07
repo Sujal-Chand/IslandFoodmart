@@ -48,6 +48,7 @@ namespace IslandFoodmart.Views
 
         }
 
+       
         // GET: ShoppingOrders/Details/5
         public async Task<IActionResult> Details(int? id)
         {

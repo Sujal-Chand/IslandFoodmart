@@ -12,17 +12,20 @@ using System.Data;
 
 namespace IslandFoodmart.Views
 {
+    
     public class ProductsController : Controller
     {
+  
         private readonly ApplicationDbContext _context;
-
+       
         public ProductsController(ApplicationDbContext context)
         {
             _context = context;
-        }
 
+        }
+     
         // GET: Products
-        public async Task<IActionResult> Index(string SearchString)
+        public async Task<IActionResult> Index(string SearchString, string SortBy)
         {
             if (_context.Product == null)
             {
@@ -32,11 +35,14 @@ namespace IslandFoodmart.Views
             //Includes the fields from Categories (CategoryID and CategoryName).
             var products = from n in _context.Product.Include(p => p.Category)
                            select n;
+
             //Select from SearchString -- SearchString is also used for finding products of different categories through an or statement.
             if (!String.IsNullOrEmpty(SearchString))
             {
+
                 products = products.Where(ss => ss.ProductName!.Contains(SearchString) || ss.Category.CategoryName!.Contains(SearchString));
-                return View(await products.ToListAsync());
+                    return View(await products.ToListAsync());
+                
             }
             //If the SearchString is left empty all products will be returned.
             else
@@ -47,6 +53,7 @@ namespace IslandFoodmart.Views
           
         }
 
+        
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
