@@ -21,7 +21,7 @@
                 @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductPrice)
+                @Html.ActionLink("Product Price", "Index", new { sortOrder = ViewBag.PriceSortParm, currentFilter=ViewBag.CurrentFilter})
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductStock)

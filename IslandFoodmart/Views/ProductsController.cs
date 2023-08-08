@@ -9,6 +9,7 @@ using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.Data.SqlClient;
 
 namespace IslandFoodmart.Views
 {
@@ -25,13 +26,24 @@ namespace IslandFoodmart.Views
         }
      
         // GET: Products
-        public async Task<IActionResult> Index(string SearchString, string SortBy)
+        public async Task<IActionResult> Index(string SearchString, string sortOrder, string currentFilter)
         {
+            ViewBag.PriceSortParm = sortOrder == "Price" ? "price_desc" : "Price";
             if (_context.Product == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Product'  is null.");
             }
 
+            if (SearchString != null)
+            {
+
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = SearchString;
             //Includes the fields from Categories (CategoryID and CategoryName).
             var products = from n in _context.Product.Include(p => p.Category)
                            select n;
@@ -41,19 +53,28 @@ namespace IslandFoodmart.Views
             {
 
                 products = products.Where(ss => ss.ProductName!.Contains(SearchString) || ss.Category.CategoryName!.Contains(SearchString));
-                    return View(await products.ToListAsync());
-                
+
+
             }
-            //If the SearchString is left empty all products will be returned.
-            else
+            switch (sortOrder)
             {
-                var applicationDbContext = _context.Product.Include(p => p.Category);
-                return View(await applicationDbContext.ToListAsync());
+                case "Price":
+                    products = products.OrderByDescending(ss => ss.ProductPrice);
+                    break;
+                case "price_desc":
+                    products = products.OrderBy(ss => ss.ProductPrice);
+                    break;
+                default:
+                    products = products.OrderBy(ss => ss.ProductName);
+                    break;
+
             }
-          
+            return View(await products.ToListAsync());
+
+
         }
 
-        
+
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
