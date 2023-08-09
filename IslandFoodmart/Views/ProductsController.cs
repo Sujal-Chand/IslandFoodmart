@@ -33,7 +33,6 @@ namespace IslandFoodmart.Views
             {
                 return Problem("Entity set 'ApplicationDbContext.Product'  is null.");
             }
-
             if (SearchString != null)
             {
 
@@ -42,7 +41,6 @@ namespace IslandFoodmart.Views
             {
                 SearchString = currentFilter;
             }
-
             ViewBag.CurrentFilter = SearchString;
             //Includes the fields from Categories (CategoryID and CategoryName).
             var products = from n in _context.Product.Include(p => p.Category)
@@ -50,28 +48,26 @@ namespace IslandFoodmart.Views
 
             //Select from SearchString -- SearchString is also used for finding products of different categories through an or statement.
             if (!String.IsNullOrEmpty(SearchString))
-            {
-
+            { 
                 products = products.Where(ss => ss.ProductName!.Contains(SearchString) || ss.Category.CategoryName!.Contains(SearchString));
-
-
             }
+            //Switch case function for sort functionality
             switch (sortOrder)
             {
                 case "Price":
+                    //Highest to lowest price
                     products = products.OrderByDescending(ss => ss.ProductPrice);
                     break;
                 case "price_desc":
+                    //Lowest to highest price
                     products = products.OrderBy(ss => ss.ProductPrice);
                     break;
                 default:
+                    //Default case order by product name
                     products = products.OrderBy(ss => ss.ProductName);
                     break;
-
             }
             return View(await products.ToListAsync());
-
-
         }
 
 
