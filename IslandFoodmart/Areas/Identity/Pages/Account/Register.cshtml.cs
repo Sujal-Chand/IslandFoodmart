@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using IslandFoodmart.Areas.Identity.Data;
+using IslandFoodmart.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +26,7 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly ApplicationDbContext _context;
         private readonly SignInManager<DatabaseUser> _signInManager;
         private readonly UserManager<DatabaseUser> _userManager;
         private readonly IUserStore<DatabaseUser> _userStore;
@@ -34,6 +36,7 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account
 
         public RegisterModel(
             UserManager<DatabaseUser> userManager,
+            ApplicationDbContext context,
             IUserStore<DatabaseUser> userStore,
             SignInManager<DatabaseUser> signInManager,
             ILogger<RegisterModel> logger)
@@ -44,6 +47,8 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
+
             //_emailSender = emailSender;
         }
 
@@ -130,6 +135,27 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
+                var newOrder = new ShoppingOrder
+                {
+                    OrderDate = DateTime.Now,
+                    PickupDate = DateTime.Now,
+                    UserName = Input.Email,
+                    ShoppingFirstName = Input.FirstName,
+                    OrderStatus = Status.Incompleted,
+                    PriceTotal = 0
+                };
+                var payment = new Payment
+                {
+                    ShoppingOrder = newOrder,
+                    PaymentAmount = newOrder.PriceTotal,
+                    PaymentMethod = "Debit",
+                    PaymentDate = newOrder.OrderDate
+
+                };
+                _context.Add(payment);
+                _context.Add(newOrder);
+
+                await _context.SaveChangesAsync();
 
                 if (result.Succeeded)
                 {

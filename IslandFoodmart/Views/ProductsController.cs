@@ -78,21 +78,16 @@ namespace IslandFoodmart.Views
         {
             string ThisURL = this.Request.Path;
             var user = await _userManager.GetUserAsync(User);
-            var orders = Enumerable.Empty<ShoppingOrder>();
-            foreach (var s in _context.ShoppingOrder)
-            {
-                if (s.UserName == user.UserName)
-                {
-                    var p = _context.ShoppingOrder.Where(f => f == s).AsNoTracking();
-                    orders = orders.Concat(p);
-                }
-            }
+            var orders = from r in _context.ShoppingOrder
+                         orderby r.UserName
+                         where r.UserName == user.UserName
+                         select r;
             orders = orders.OrderByDescending(s => s.OrderDate);
+
             var first = orders.FirstOrDefault();
-            if (first != null)
-            {
+
                 if (first.OrderStatus == Status.Incompleted)
-                {
+               { 
                     var newShoppingItem = new ShoppingItem
                     {
                         ShoppingOrderID = first.ShoppingOrderID,
@@ -100,11 +95,12 @@ namespace IslandFoodmart.Views
                         Quantity = 1
                     };
                     _context.Add(newShoppingItem);
-                    await _context.SaveChangesAsync();
+           
+                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
 
-                }
-                else
+            }
+            else
                 {
                     var newOrder = new ShoppingOrder
                     {
@@ -125,22 +121,19 @@ namespace IslandFoodmart.Views
                     };
                     _context.Add(payment);
                     _context.Add(newOrder);
+
                     await _context.SaveChangesAsync();
 
-                    var updatedorders = Enumerable.Empty<ShoppingOrder>();
-                    foreach (var s in _context.ShoppingOrder)
-                    {
-                        if (s.UserName == user.UserName)
-                        {
-                            var p = _context.ShoppingOrder.Where(f => f == s).AsNoTracking();
-                            updatedorders = updatedorders.Concat(p);
-                        }
-                    }
+                    orders = from r in _context.ShoppingOrder
+                             orderby r.UserName
+                             where r.UserName == user.UserName
+                             select r;
+
                     orders = orders.OrderByDescending(s => s.OrderDate);
                     var updatedfirst = orders.FirstOrDefault();
                     var newShoppingItem = new ShoppingItem
                     {
-                        ShoppingOrderID = first.ShoppingOrderID,
+                        ShoppingOrderID = updatedfirst.ShoppingOrderID,
                         ProductID = (int)id,
                         Quantity = 1
                     };
@@ -148,32 +141,7 @@ namespace IslandFoodmart.Views
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-            }
-            else
-            {
-                var newOrder = new ShoppingOrder
-                {
-                    OrderDate = DateTime.Now,
-                    PickupDate = DateTime.Now,
-                    UserName = user.UserName,
-                    ShoppingFirstName = user.FirstName,
-                    OrderStatus = Status.Incompleted,
-                    PriceTotal = 0
-                };
-                var payment = new Payment
-                {
-                    ShoppingOrder = newOrder,
-                    PaymentAmount = newOrder.PriceTotal,
-                    PaymentMethod = "Debit",
-                    PaymentDate = newOrder.OrderDate
-
-                };
-                _context.Add(payment);
-                _context.Add(newOrder);
-                await _context.SaveChangesAsync();
-                return Redirect(nameof(Index));
-            }
-        
+            
         }
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
