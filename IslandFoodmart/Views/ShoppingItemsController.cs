@@ -7,22 +7,38 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IslandFoodmart.Views
 {
     public class ShoppingItems : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<DatabaseUser> _userManager;
 
-        public ShoppingItems(ApplicationDbContext context)
+        public ShoppingItems(ApplicationDbContext context, UserManager<DatabaseUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: ShoppingItems
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ShoppingItem.Include(s => s.Product).Include(s => s.ShoppingOrder);
+            var user = await _userManager.GetUserAsync(User);
+            var orders = from r in _context.ShoppingOrder
+                         orderby r.UserName
+                         where r.UserName == user.UserName
+                         select r;
+            orders = orders.OrderByDescending(s => s.OrderDate);
+
+
+            var first = orders.FirstOrDefault();
+
+            var applicationDbContext = from cartitem in _context.ShoppingItem.Include(s => s.Product).Include(s => s.ShoppingOrder)
+                                       where cartitem.ShoppingOrderID == first.ShoppingOrderID
+                                       select cartitem;
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -102,8 +118,21 @@ namespace IslandFoodmart.Views
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+                var orders = from r in _context.ShoppingOrder
+                             orderby r.UserName
+                             where r.UserName == user.UserName
+                             select r;
+                orders = orders.OrderByDescending(s => s.OrderDate);
+                var first = orders.FirstOrDefault();
+                if (shoppingItem.ShoppingOrderID != first.ShoppingOrderID)
+                {
+                    ModelState.AddModelError( "","Expected Error. This item is from a previous or other users cart.");
+                    return View();
+                }
+
                 try
                 {
                     _context.Update(shoppingItem);

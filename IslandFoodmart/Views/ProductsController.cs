@@ -84,10 +84,17 @@ namespace IslandFoodmart.Views
                          select r;
             orders = orders.OrderByDescending(s => s.OrderDate);
 
+       
             var first = orders.FirstOrDefault();
 
                 if (first.OrderStatus == Status.Incompleted)
-               { 
+                {
+                var ProductFilter = from cr in _context.ShoppingItem.Include(s => s.Product).Include(s => s.ShoppingOrder)
+                                  where cr.ShoppingOrderID == first.ShoppingOrderID && cr.ProductID == (int)id
+                                  select cr;
+                var ThisItem = ProductFilter.FirstOrDefault();
+                if (ThisItem == null)
+                {
                     var newShoppingItem = new ShoppingItem
                     {
                         ShoppingOrderID = first.ShoppingOrderID,
@@ -95,12 +102,17 @@ namespace IslandFoodmart.Views
                         Quantity = 1
                     };
                     _context.Add(newShoppingItem);
-           
-                     await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
-
-            }
-            else
+                }
+                else
+                {
+                    int? ID = ThisItem.ShoppingItemID; // Replace with your actual search string
+                    int? ShoppingID = ThisItem.ShoppingOrderID;
+                    return RedirectToAction("Edit", "ShoppingItems", new { id = ID });
+                }
+                }
+                else
                 {
                     var newOrder = new ShoppingOrder
                     {
