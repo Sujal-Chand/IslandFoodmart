@@ -10,21 +10,25 @@ using IslandFoodmart.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Identity;
 
 namespace IslandFoodmart.Views
 {
-    
+
     public class ProductsController : Controller
     {
-  
+
         private readonly ApplicationDbContext _context;
-       
-        public ProductsController(ApplicationDbContext context)
+        private readonly UserManager<DatabaseUser> _userManager;
+
+
+
+        public ProductsController(ApplicationDbContext context, UserManager<DatabaseUser> userManager)
         {
             _context = context;
-
+            _userManager = userManager;
         }
-     
+
         // GET: Products
         public async Task<IActionResult> Index(string SearchString, string sortOrder, string currentFilter)
         {
@@ -48,7 +52,7 @@ namespace IslandFoodmart.Views
 
             //Select from SearchString -- SearchString is also used for finding products of different categories through an or statement.
             if (!String.IsNullOrEmpty(SearchString))
-            { 
+            {
                 products = products.Where(ss => ss.ProductName!.Contains(SearchString) || ss.Category.CategoryName!.Contains(SearchString));
             }
             //Switch case function for sort functionality
@@ -70,7 +74,107 @@ namespace IslandFoodmart.Views
             return View(await products.ToListAsync());
         }
 
+        public async Task<IActionResult> AddToCart(int? id)
+        {
+            string ThisURL = this.Request.Path;
+            var user = await _userManager.GetUserAsync(User);
+            var orders = Enumerable.Empty<ShoppingOrder>();
+            foreach (var s in _context.ShoppingOrder)
+            {
+                if (s.UserName == user.UserName)
+                {
+                    var p = _context.ShoppingOrder.Where(f => f == s).AsNoTracking();
+                    orders = orders.Concat(p);
+                }
+            }
+            orders = orders.OrderByDescending(s => s.OrderDate);
+            var first = orders.FirstOrDefault();
+            if (first != null)
+            {
+                if (first.OrderStatus == Status.Incompleted)
+                {
+                    var newShoppingItem = new ShoppingItem
+                    {
+                        ShoppingOrderID = first.ShoppingOrderID,
+                        ProductID = (int)id,
+                        Quantity = 1
+                    };
+                    _context.Add(newShoppingItem);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
 
+                }
+                else
+                {
+                    var newOrder = new ShoppingOrder
+                    {
+                        OrderDate = DateTime.Now,
+                        PickupDate = DateTime.Now,
+                        UserName = user.UserName,
+                        ShoppingFirstName = user.FirstName,
+                        OrderStatus = Status.Incompleted,
+                        PriceTotal = 0
+                    };
+                    var payment = new Payment
+                    {
+                        ShoppingOrder = newOrder,
+                        PaymentAmount = newOrder.PriceTotal,
+                        PaymentMethod = "Debit",
+                        PaymentDate = newOrder.OrderDate
+
+                    };
+                    _context.Add(payment);
+                    _context.Add(newOrder);
+                    await _context.SaveChangesAsync();
+
+                    var updatedorders = Enumerable.Empty<ShoppingOrder>();
+                    foreach (var s in _context.ShoppingOrder)
+                    {
+                        if (s.UserName == user.UserName)
+                        {
+                            var p = _context.ShoppingOrder.Where(f => f == s).AsNoTracking();
+                            updatedorders = updatedorders.Concat(p);
+                        }
+                    }
+                    orders = orders.OrderByDescending(s => s.OrderDate);
+                    var updatedfirst = orders.FirstOrDefault();
+                    var newShoppingItem = new ShoppingItem
+                    {
+                        ShoppingOrderID = first.ShoppingOrderID,
+                        ProductID = (int)id,
+                        Quantity = 1
+                    };
+                    _context.Add(newShoppingItem);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            else
+            {
+                var newOrder = new ShoppingOrder
+                {
+                    OrderDate = DateTime.Now,
+                    PickupDate = DateTime.Now,
+                    UserName = user.UserName,
+                    ShoppingFirstName = user.FirstName,
+                    OrderStatus = Status.Incompleted,
+                    PriceTotal = 0
+                };
+                var payment = new Payment
+                {
+                    ShoppingOrder = newOrder,
+                    PaymentAmount = newOrder.PriceTotal,
+                    PaymentMethod = "Debit",
+                    PaymentDate = newOrder.OrderDate
+
+                };
+                _context.Add(payment);
+                _context.Add(newOrder);
+                await _context.SaveChangesAsync();
+                return Redirect(nameof(Index));
+            }
+        
+        }
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -205,14 +309,14 @@ namespace IslandFoodmart.Views
             {
                 _context.Product.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return (_context.Product?.Any(e => e.ProductID == id)).GetValueOrDefault();
+            return (_context.Product?.Any(e => e.ProductID == id)).GetValueOrDefault();
         }
     }
 }
