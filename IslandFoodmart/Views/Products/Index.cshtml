@@ -40,7 +40,7 @@
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ImagePath)
+                    <img width="100px" height="100px" src="~/lib/@Html.DisplayFor(modelItem => item.ImagePath)" alt="Product Image">
                 </td>
                 <td>
                     $@Html.DisplayFor(modelItem => item.ProductPrice)
