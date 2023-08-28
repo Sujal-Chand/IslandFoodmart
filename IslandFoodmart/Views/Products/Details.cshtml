@@ -1,5 +1,8 @@
 ﻿@model IslandFoodmart.Models.Product
-
+@using IslandFoodmart.Areas.Identity.Data;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<DatabaseUser> SignInManager
+@inject UserManager<DatabaseUser> UserManager
 @{
     ViewData["Title"] = "Details";
 }
@@ -10,39 +13,53 @@
     <h4>Product</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ProductName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProductName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImagePath)
+            <img width="150px" height="150px" src="~/lib/@Html.DisplayFor(model => model.ImagePath)" alt="Product Image">
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImagePath)
+        <dd class="col-sm-10">
+
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ProductPrice)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProductPrice)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ProductStock)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProductStock)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Category)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Category.CategoryName)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProductID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
+    {
+        <td>
+            <a asp-action="Edit" asp-route-id="@Model?.ProductID">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </td>
+
+    }
+    else
+    {
+        <td>
+            <a asp-action="Index">Back to List</a>
+        </td>
+    }
+   
 </div>

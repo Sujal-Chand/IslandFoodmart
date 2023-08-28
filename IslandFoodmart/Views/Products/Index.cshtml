@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<IslandFoodmart.Models.Product>
-
+@using IslandFoodmart.Areas.Identity.Data;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<DatabaseUser> SignInManager
+@inject UserManager<DatabaseUser> UserManager
 @{
     ViewData["Title"] = "Index";
 }
@@ -21,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             <th>
-                @Html.ActionLink("Product Price", "Index", new { sortOrder = ViewBag.PriceSortParm, currentFilter=ViewBag.CurrentFilter})
+                @Html.ActionLink("Product Price", "Index", new { sortOrder = ViewBag.PriceSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductStock)
@@ -51,12 +54,25 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Category.CategoryName)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
-                    <a asp-action="AddToCart" asp-route-id="@item.ProductID">Add to cart</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
-                </td>
+                @if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
+                    {
+                        <td>
+
+                            <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
+                            <a asp-action="AddToCart" asp-route-id="@item.ProductID">Add to cart</a> |
+                            <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
+                        </td>
+
+                    }
+                    else
+                    {
+                         <td>
+
+                            <a asp-action="AddToCart" asp-route-id="@item.ProductID">Add to cart</a> |
+                            <a asp-action="Details" asp-route-id="@item.ProductID">Details</a>
+                         </td>
+                    }
             </tr>
         }
     </tbody>

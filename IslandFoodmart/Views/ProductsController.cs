@@ -74,6 +74,7 @@ namespace IslandFoodmart.Views
             return View(await products.ToListAsync());
         }
 
+        [Authorize]
         public async Task<IActionResult> AddToCart(int? id)
         {
             string ThisURL = this.Request.Path;
