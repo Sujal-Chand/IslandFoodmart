@@ -32,6 +32,7 @@ namespace IslandFoodmart.Views
         // GET: Products
         public async Task<IActionResult> Index(string SearchString, string sortOrder, string currentFilter)
         {
+            ViewBag.SearchURL = this.Request.Path;
             ViewBag.PriceSortParm = sortOrder == "Price" ? "price_desc" : "Price";
             if (_context.Product == null)
             {
@@ -75,9 +76,9 @@ namespace IslandFoodmart.Views
         }
 
         [Authorize]
-        public async Task<IActionResult> AddToCart(int? id)
+        public async Task<IActionResult> AddToCart(int? id, string? SearchString)
         {
-            string ThisURL = this.Request.Path;
+            string ThisURL = SearchString;
             var user = await _userManager.GetUserAsync(User);
             var orders = from r in _context.ShoppingOrder
                          orderby r.UserName
@@ -88,11 +89,11 @@ namespace IslandFoodmart.Views
        
             var first = orders.FirstOrDefault();
 
-                if (first.OrderStatus == Status.Incompleted)
-                {
+            if (first.OrderStatus == Status.Incompleted)
+            {
                 var ProductFilter = from cr in _context.ShoppingItem.Include(s => s.Product).Include(s => s.ShoppingOrder)
-                                  where cr.ShoppingOrderID == first.ShoppingOrderID && cr.ProductID == (int)id
-                                  select cr;
+                                    where cr.ShoppingOrderID == first.ShoppingOrderID && cr.ProductID == (int)id
+                                    select cr;
                 var ThisItem = ProductFilter.FirstOrDefault();
                 if (ThisItem == null)
                 {
@@ -104,7 +105,14 @@ namespace IslandFoodmart.Views
                     };
                     _context.Add(newShoppingItem);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    if (ThisURL != null)
+                    {
+                        return Redirect(ThisURL);
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
                 else
                 {
@@ -112,48 +120,55 @@ namespace IslandFoodmart.Views
                     int? ShoppingID = ThisItem.ShoppingOrderID;
                     return RedirectToAction("Edit", "ShoppingItems", new { id = ID });
                 }
+            }
+            else
+            {
+                var newOrder = new ShoppingOrder
+                {
+                    OrderDate = DateTime.Now,
+                    PickupDate = DateTime.Now,
+                    UserName = user.UserName,
+                    ShoppingFirstName = user.FirstName,
+                    OrderStatus = Status.Incompleted,
+                    PriceTotal = 0
+                };
+                var payment = new Payment
+                {
+                    ShoppingOrder = newOrder,
+                    PaymentAmount = newOrder.PriceTotal,
+                    PaymentMethod = "Debit",
+                    PaymentDate = newOrder.OrderDate
+
+                };
+                _context.Add(payment);
+                _context.Add(newOrder);
+
+                await _context.SaveChangesAsync();
+
+                orders = from r in _context.ShoppingOrder
+                         orderby r.UserName
+                         where r.UserName == user.UserName
+                         select r;
+
+                orders = orders.OrderByDescending(s => s.OrderDate);
+                var updatedfirst = orders.FirstOrDefault();
+                var newShoppingItem = new ShoppingItem
+                {
+                    ShoppingOrderID = updatedfirst.ShoppingOrderID,
+                    ProductID = (int)id,
+                    Quantity = 1
+                };
+                _context.Add(newShoppingItem);
+                await _context.SaveChangesAsync();
+                if (ThisURL != null)
+                {
+                    return Redirect(ThisURL);
                 }
                 else
                 {
-                    var newOrder = new ShoppingOrder
-                    {
-                        OrderDate = DateTime.Now,
-                        PickupDate = DateTime.Now,
-                        UserName = user.UserName,
-                        ShoppingFirstName = user.FirstName,
-                        OrderStatus = Status.Incompleted,
-                        PriceTotal = 0
-                    };
-                    var payment = new Payment
-                    {
-                        ShoppingOrder = newOrder,
-                        PaymentAmount = newOrder.PriceTotal,
-                        PaymentMethod = "Debit",
-                        PaymentDate = newOrder.OrderDate
-
-                    };
-                    _context.Add(payment);
-                    _context.Add(newOrder);
-
-                    await _context.SaveChangesAsync();
-
-                    orders = from r in _context.ShoppingOrder
-                             orderby r.UserName
-                             where r.UserName == user.UserName
-                             select r;
-
-                    orders = orders.OrderByDescending(s => s.OrderDate);
-                    var updatedfirst = orders.FirstOrDefault();
-                    var newShoppingItem = new ShoppingItem
-                    {
-                        ShoppingOrderID = updatedfirst.ShoppingOrderID,
-                        ProductID = (int)id,
-                        Quantity = 1
-                    };
-                    _context.Add(newShoppingItem);
-                    await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
+            }
             
         }
         // GET: Products/Details/5
