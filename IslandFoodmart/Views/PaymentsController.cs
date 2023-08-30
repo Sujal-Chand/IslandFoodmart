@@ -59,7 +59,7 @@ namespace IslandFoodmart.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ShoppingOrderID,PaymentAmount,PaymentMethod,PaymentDate")] Payment payment)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(payment);
                 await _context.SaveChangesAsync();
@@ -98,7 +98,7 @@ namespace IslandFoodmart.Views
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {

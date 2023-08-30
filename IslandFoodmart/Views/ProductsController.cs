@@ -30,9 +30,13 @@ namespace IslandFoodmart.Views
         }
 
         // GET: Products
-        public async Task<IActionResult> Index(string SearchString, string sortOrder, string currentFilter)
+        public async Task<IActionResult> Index(string SearchString, string sortOrder, string currentFilter, string? savedsearch)
         {
-            ViewBag.SearchURL = this.Request.Path;
+            if (savedsearch != null)
+            {
+                SearchString = savedsearch;
+            }
+            ViewBag.SearchURL = SearchString;
             ViewBag.PriceSortParm = sortOrder == "Price" ? "price_desc" : "Price";
             if (_context.Product == null)
             {
@@ -45,6 +49,7 @@ namespace IslandFoodmart.Views
             else
             {
                 SearchString = currentFilter;
+                ViewBag.SearchURL = SearchString;
             }
             ViewBag.CurrentFilter = SearchString;
             //Includes the fields from Categories (CategoryID and CategoryName).
@@ -76,9 +81,8 @@ namespace IslandFoodmart.Views
         }
 
         [Authorize]
-        public async Task<IActionResult> AddToCart(int? id, string? SearchString)
+        public async Task<IActionResult> AddToCart(int? id, string? search)
         {
-            string ThisURL = SearchString;
             var user = await _userManager.GetUserAsync(User);
             var orders = from r in _context.ShoppingOrder
                          orderby r.UserName
@@ -105,14 +109,9 @@ namespace IslandFoodmart.Views
                     };
                     _context.Add(newShoppingItem);
                     await _context.SaveChangesAsync();
-                    if (ThisURL != null)
-                    {
-                        return Redirect(ThisURL);
-                    }
-                    else
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
+                    int? ID = (int)id;
+                    return RedirectToAction("Details", "Products", new { id = ID, inCart = 1, view = search });
+
                 }
                 else
                 {
@@ -160,25 +159,22 @@ namespace IslandFoodmart.Views
                 };
                 _context.Add(newShoppingItem);
                 await _context.SaveChangesAsync();
-                if (ThisURL != null)
-                {
-                    return Redirect(ThisURL);
-                }
-                else
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+                int? ID = (int)id;
+                return RedirectToAction("Details", "Products", new { id = ID, inCart = 1, view = search});
             }
             
         }
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? inCart, string? view)
         {
+            ViewBag.SearchString = view;
+            Console.WriteLine(" This search is {0}", ViewBag.SearchString);
             if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
 
+           
             var product = await _context.Product
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.ProductID == id);
@@ -187,7 +183,16 @@ namespace IslandFoodmart.Views
                 return NotFound();
             }
 
-            return View(product);
+            if (inCart == 1)
+            {
+                ViewBag.Message = "Added to cart sucessfully!";
+                return View(product);
+            }
+            else
+            {
+                return View(product);
+            }
+           
         }
 
         // GET: Products/Create
