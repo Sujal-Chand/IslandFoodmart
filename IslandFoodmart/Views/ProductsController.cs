@@ -112,6 +112,7 @@ namespace IslandFoodmart.Views
                             Quantity = 1
                         };
                         product.ProductStock--;
+                        first.CartQuantity++;
                         _context.Add(newShoppingItem);
                         await _context.SaveChangesAsync();
                     }
@@ -138,6 +139,7 @@ namespace IslandFoodmart.Views
                     UserName = user.UserName,
                     ShoppingFirstName = user.FirstName,
                     OrderStatus = Status.Incompleted,
+                    CartQuantity = 1,
                     PriceTotal = 0
                 };
                 var payment = new Payment

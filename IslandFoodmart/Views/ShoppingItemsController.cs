@@ -227,12 +227,24 @@ namespace IslandFoodmart.Views
             {
                 return Problem("Entity set 'ApplicationDbContext.ShoppingItem'  is null.");
             }
+            var user = await _userManager.GetUserAsync(User);
+            var orders = from r in _context.ShoppingOrder
+                         orderby r.UserName
+                         where r.UserName == user.UserName
+                         select r;
+            orders = orders.OrderByDescending(s => s.OrderDate);
+            var first = orders.FirstOrDefault();
+
             var shoppingItem = await _context.ShoppingItem.FindAsync(id);
             if (shoppingItem != null)
             {
                 int quantity = shoppingItem.Quantity;
                 var savedproduct = await _context.Product.SingleOrDefaultAsync(p => p.ProductID == shoppingItem.ProductID);
                 savedproduct.ProductStock += quantity;
+                if (first.CartQuantity > 0)
+                {
+                    first.CartQuantity--;
+                }
                 _context.ShoppingItem.Remove(shoppingItem);
             }
             

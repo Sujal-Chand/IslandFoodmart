@@ -33,6 +33,8 @@ namespace IslandFoodmart.Models
         [Display(Name = "Order Status")]
         public Status OrderStatus { get; set; }
 
+        [Display(Name = "Items in cart")]
+        public int CartQuantity { get; set; }
 
 		public Payment Payment { get; set; }
 		public ICollection<ShoppingItem> ShoppingItems { get; set; }
