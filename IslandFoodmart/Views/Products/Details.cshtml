@@ -50,18 +50,28 @@
     @if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
     {
         <td>
-            <a asp-action="AddToCart" asp-route-id="@Model?.ProductID" asp-route-search="@ViewBag.SearchString">Add to cart</a>
-            <a asp-action="Edit" asp-route-id="@Model?.ProductID">Edit</a> |
-            <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a>
+            | <a asp-action="Edit" asp-route-id="@Model?.ProductID">Edit</a> |
+            <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a> |
         </td>
 
     }
     else
     {
+        @if (Model.ProductStock <= 0)
+        {
+        <td>
+             <a style="color:red;" >Out of stock</a> |
+             <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a>
+        </td>
+        }
+        else
+        {
         <td>
             <a asp-action="AddToCart" asp-route-id="@Model?.ProductID" asp-route-search="@ViewBag.SearchString">Add to cart</a> |
             <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a>
         </td>
+        }
+        
     }
    
 </div>

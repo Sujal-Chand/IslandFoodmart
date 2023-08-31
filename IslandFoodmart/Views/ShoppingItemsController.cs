@@ -23,8 +23,20 @@ namespace IslandFoodmart.Views
         }
 
         // GET: ShoppingItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? updatestatus)
         {
+            if (updatestatus == 0)
+            {
+                ViewBag.Status = 0;
+            }
+            if (updatestatus == 1)
+            {
+                ViewBag.Status = 1;
+            }
+            if (updatestatus == 2)
+            {
+                ViewBag.Status = 2;
+            }
             var user = await _userManager.GetUserAsync(User);
             var orders = from r in _context.ShoppingOrder
                          orderby r.UserName
@@ -133,10 +145,38 @@ namespace IslandFoodmart.Views
                     return View();
                 }
 
+                if (shoppingItem.Quantity <= 0)
+                {
+                    return RedirectToAction("Index", "ShoppingItems", new { updatestatus = 2 });
+                }
+
                 try
                 {
-                    _context.Update(shoppingItem);
-                    await _context.SaveChangesAsync();
+                    var pastitem = from r in _context.ShoppingItem.AsNoTracking()
+                                   orderby r.ShoppingOrderID
+                                   where r.ShoppingOrderID == first.ShoppingOrderID && r.ProductID == shoppingItem.ProductID
+                                   select r;
+                    var products = from p in _context.Product.AsNoTracking()
+                                   where p.ProductID == shoppingItem.ProductID
+                                  select p;
+                    var savedproduct = await _context.Product.SingleOrDefaultAsync(p => p.ProductID == shoppingItem.ProductID);
+                    var thisproduct = products.FirstOrDefault();
+                    var pastquantity = pastitem.FirstOrDefault();
+                    int quantity = thisproduct.ProductStock;
+                    quantity += pastquantity.Quantity;
+                    quantity -= shoppingItem.Quantity;
+                    int testquantity = quantity;
+                    if (testquantity >= 0)
+                    {
+                        savedproduct.ProductStock = quantity;
+                        _context.Update(shoppingItem);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "ShoppingItems", new { updatestatus = 0});
+                    }
+                  
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -149,7 +189,7 @@ namespace IslandFoodmart.Views
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "ShoppingItems", new { updatestatus = 1 });
             }
             ViewData["ProductID"] = new SelectList(_context.Product, "ProductID", "ProductName", shoppingItem.ProductID);
             ViewData["ShoppingOrderID"] = new SelectList(_context.ShoppingOrder, "ShoppingOrderID", "ShoppingOrderID", shoppingItem.ShoppingOrderID);
@@ -188,6 +228,9 @@ namespace IslandFoodmart.Views
             var shoppingItem = await _context.ShoppingItem.FindAsync(id);
             if (shoppingItem != null)
             {
+                int quantity = shoppingItem.Quantity;
+                var savedproduct = await _context.Product.SingleOrDefaultAsync(p => p.ProductID == shoppingItem.ProductID);
+                savedproduct.ProductStock += quantity;
                 _context.ShoppingItem.Remove(shoppingItem);
             }
             

@@ -101,21 +101,30 @@ namespace IslandFoodmart.Views
                 var ThisItem = ProductFilter.FirstOrDefault();
                 if (ThisItem == null)
                 {
-                    var newShoppingItem = new ShoppingItem
+                    var product = await _context.Product.SingleOrDefaultAsync(p => p.ProductID == id);
+                    int? Error = 0;
+                    if (product.ProductStock > 0)
                     {
-                        ShoppingOrderID = first.ShoppingOrderID,
-                        ProductID = (int)id,
-                        Quantity = 1
-                    };
-                    _context.Add(newShoppingItem);
-                    await _context.SaveChangesAsync();
+                        var newShoppingItem = new ShoppingItem
+                        {
+                            ShoppingOrderID = first.ShoppingOrderID,
+                            ProductID = (int)id,
+                            Quantity = 1
+                        };
+                        product.ProductStock--;
+                        _context.Add(newShoppingItem);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        Error = 1; 
+                    }
                     int? ID = (int)id;
-                    return RedirectToAction("Details", "Products", new { id = ID, inCart = 1, view = search });
-
+                    return RedirectToAction("Details", "Products", new { id = ID, inCart = 1, view = search, error = Error });
                 }
                 else
                 {
-                    int? ID = ThisItem.ShoppingItemID; // Replace with your actual search string
+                    int? ID = ThisItem.ShoppingItemID; // Replace with the item in your cart
                     int? ShoppingID = ThisItem.ShoppingOrderID;
                     return RedirectToAction("Edit", "ShoppingItems", new { id = ID });
                 }

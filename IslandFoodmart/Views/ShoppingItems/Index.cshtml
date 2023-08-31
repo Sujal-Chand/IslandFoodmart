@@ -5,6 +5,18 @@
 }
 
 <h1>Shopping Cart</h1>
+@if (ViewBag.Status == 2)
+{
+    <p style="color: red; text-decoration: double;">Please enter a valid quantity.</p>
+}
+@if (ViewBag.Status == 1)
+{
+    <p style="color: green; text-decoration: double;">Updated Quantity Successfully!</p>
+}
+@if (ViewBag.Status == 0)
+{
+    <p style="color: red; text-decoration: double;">Please enter a lower quantity.</p>
+}
 
 <table class="table">
     <thead>
@@ -22,23 +34,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                $@Math.Round((decimal)item.Quantity * item.Product.ProductPrice, 2) <!-- Rounding to 2 decimal places -->
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    $@Math.Round((decimal)item.Quantity * item.Product.ProductPrice, 2) <!-- Rounding to 2 decimal places -->
 
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ShoppingItemID">Edit Quantity</a> |
-                <a asp-action="Delete" asp-route-id="@item.ShoppingItemID">Remove from Cart</a>
-            </td>
-        </tr>
-}
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ShoppingItemID">Edit Quantity</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ShoppingItemID">Remove from Cart</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

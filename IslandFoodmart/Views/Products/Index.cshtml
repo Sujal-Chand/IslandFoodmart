@@ -55,19 +55,29 @@
                     @Html.DisplayFor(modelItem => item.Category.CategoryName)
                 </td>
                 @if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
+                    </td>
+                }
+                else
+                {
+                    @if (item.ProductStock != 0)
                     {
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
+                             | <a asp-action="Details" asp-route-id="@item.ProductID" asp-route-view="@ViewBag.SearchURL">Buy Online</a> |
                         </td>
                     }
                     else
                     {
-                      <td>
-                        | <a asp-action="Details" asp-route-id="@item.ProductID" asp-route-view="@ViewBag.SearchURL">Buy Online</a> |
-                      </td>
+                        <td>
+                            | <a style="color: red">Out of stock</a> |
+                        </td>
                     }
+
+                }
             </tr>
         }
     </tbody>
