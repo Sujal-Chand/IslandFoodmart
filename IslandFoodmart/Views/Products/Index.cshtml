@@ -5,80 +5,87 @@
 @inject UserManager<DatabaseUser> UserManager
 @{
     ViewData["Title"] = "Index";
-    
+
 }
 
-<h1>Products</h1>
+<h1 style=" display: flex; justify-content: center; align-content: center; padding-top: 20px; padding-bottom: 10px;">Products</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th>
-                @Html.ActionLink("Product Price", "Index", new { sortOrder = ViewBag.PriceSortParm, currentFilter = ViewBag.CurrentFilter })
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductStock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div style="background-color: white; border-radius: 20px; padding: 20px">
+    <table class="table" b>
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    <img width="100px" height="100px" src="~/lib/@Html.DisplayFor(modelItem => item.ImagePath)" alt="Product Image">
-                </td>
-                <td>
-                    $@Html.DisplayFor(modelItem => item.ProductPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductStock)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                </td>
-                @if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
-                {
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImagePath)
+                </th>
+                <th>
+                    @Html.ActionLink("Product Price", "Index", new { sortOrder = ViewBag.PriceSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductStock)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
+                        @Html.DisplayFor(modelItem => item.ProductName)
                     </td>
-                }
-                else
-                {
-                    @if (item.ProductStock != 0)
+                    <td>
+                        <img width="100px" height="100px" src="~/lib/@Html.DisplayFor(modelItem => item.ImagePath)" alt="Product Image">
+                    </td>
+                    <td>
+                        $@Html.DisplayFor(modelItem => item.ProductPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductStock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    @if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
                     {
                         <td>
-                             | <a asp-action="Details" asp-route-id="@item.ProductID" asp-route-view="@ViewBag.SearchURL">Buy Online</a> |
+                            <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
                         </td>
                     }
                     else
                     {
-                        <td>
-                            | <a style="color: red">Out of stock</a> |
-                        </td>
-                    }
+                        @if (item.ProductStock != 0)
+                        {
+                            <td>
+                                <form asp-action="Details" asp-route-id="@item.ProductID" asp-route-view="@ViewBag.SearchURL">
+                                    <input type="submit" value="Buy Online" class="btn btn" style="background-color: green; color: white;" />
+                                </form>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <a style="color: red">Out of stock</a>
+                            </td>
+                        }
 
-                }
-            </tr>
-        }
-    </tbody>
-</table>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
