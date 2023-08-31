@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IslandFoodmart.Views
 {
@@ -23,6 +24,7 @@ namespace IslandFoodmart.Views
         }
 
         // GET: ShoppingItems
+        [Authorize]
         public async Task<IActionResult> Index(int? updatestatus)
         {
             if (updatestatus == 0)
