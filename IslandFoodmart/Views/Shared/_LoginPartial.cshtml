@@ -13,7 +13,13 @@
                      select r;
         orders = orders.OrderByDescending(s => s.OrderDate);
         var first = orders.FirstOrDefault();
-        if (first.CartQuantity == 1)
+        if (first.CartQuantity == 0)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-controller="ShoppingItems" asp-action="Index">Empty Cart</a>
+            </li>
+        }
+        else if (first.CartQuantity == 1)
         {
             <li class="nav-item">
                 <a class="nav-link text-white" asp-controller="ShoppingItems" asp-action="Index">@first.CartQuantity item in Cart</a>
