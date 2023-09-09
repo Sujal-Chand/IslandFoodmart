@@ -8,70 +8,72 @@
 }
 
 <h1>Details</h1>
-<div>
-    <h4>Product</h4>
-    <p style="color: green; text-decoration: double;">@ViewBag.Message</p>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagePath)
-            <img width="150px" height="150px" src="~/lib/@Html.DisplayFor(model => model.ImagePath)" alt="Product Image">
-        </dt>
-        <dd class="col-sm-10">
+<div style="background-color: white; border-radius: 20px; padding: 20px;">
+    <div>
+        <h4>Product</h4>
+        <p style="color: green; text-decoration: double;">@ViewBag.Message</p>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ProductName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ProductName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ImagePath)
+                <img width="150px" height="150px" src="~/lib/@Html.DisplayFor(model => model.ImagePath)" alt="Product Image">
+            </dt>
+            <dd class="col-sm-10">
 
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductPrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductPrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductStock)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductStock)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-    </dl>
-</div>
-<div>
-    @if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
-    {
-        <td>
-            | <a asp-action="Edit" asp-route-id="@Model?.ProductID">Edit</a> |
-            <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a> |
-        </td>
-
-    }
-    else
-    {
-        @if (Model.ProductStock <= 0)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ProductPrice)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ProductPrice)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ProductStock)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ProductStock)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Category.CategoryName)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserName == "admin@islandfoodmart.com")
         {
-        <td>
-             <a style="color:red;" >Out of stock</a> |
-             <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a>
-        </td>
+            <td>
+                | <a asp-action="Edit" asp-route-id="@Model?.ProductID">Edit</a> |
+                <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a> |
+            </td>
+
         }
         else
         {
-        <td>
-            <a asp-action="AddToCart" asp-route-id="@Model?.ProductID" asp-route-search="@ViewBag.SearchString">Add to cart</a> |
-            <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a>
-        </td>
+            @if (Model.ProductStock <= 0)
+            {
+                <td>
+                    <a style="color:red;">Out of stock</a> |
+                    <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a asp-action="AddToCart" asp-route-id="@Model?.ProductID" asp-route-search="@ViewBag.SearchString">Add to cart</a> |
+                    <a asp-action="Index" asp-route-savedsearch="@ViewBag.SearchString">Back to List</a>
+                </td>
+            }
+
         }
-        
-    }
-   
+
+    </div>
 </div>

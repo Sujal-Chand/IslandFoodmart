@@ -35,7 +35,36 @@ body {
     }
 }
 
+@media screen and (min-width: 768px)
+{
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 300px;
+        margin-right: 20px;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 15px;
+        font-family: arial;
+    }
+    .penes{
+        width:40%;
+    }
 
+}
+
+@media screen and (max-width: 767px)
+{
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 300px;
+        margin-right: 20px;
+        text-align: center;
+        font-family: arial;
+    }
+    .penes{
+        width:40%;
+    }
+}
 .carousel {
     position: relative;
     overflow: hidden;
@@ -315,7 +344,7 @@ h1 {
     }
 }
 
-.card {
+.cardfront {
     width: 100%;
     max-width: 5000px;
     min-width: 50px;
@@ -368,7 +397,7 @@ h1 {
     font-size: 48px;
 }
 
-.card .title {
+.cardfront .title {
     width: 100%;
     margin: 0;
     text-align: center;
@@ -379,7 +408,7 @@ h1 {
     letter-spacing: 4px;
 }
 
-.card .text {
+.cardfront .text {
     width: 80%;
     margin: 0 auto;
     font-size: 13px;
@@ -393,26 +422,26 @@ h1 {
     transition: all 0.3s ease;
 }
 
-.card:hover {
+.cardfront:hover {
     height: 270px;
 }
 
-    .card:hover .info {
+    .cardfront:hover .info {
         height: 90%;
     }
 
-    .card:hover .text {
+    .cardfront:hover .text {
         transition: all 0.3s ease;
         opacity: 1;
         max-height: 40px;
     }
 
-    .card:hover .icon {
+    .cardfront:hover .icon {
         background-position: -120px;
         transition: all 0.3s ease;
     }
 
-        .card:hover .icon i {
+        .cardfront:hover .icon i {
             background: linear-gradient(90deg, #FF7E7E, #FF4848);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
