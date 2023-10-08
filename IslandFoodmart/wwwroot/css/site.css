@@ -42,12 +42,18 @@ body {
         max-width: 300px;
         margin-right: 20px;
         text-align: center;
-        white-space: nowrap;
         font-size: 15px;
-        font-family: arial;
     }
     .penes{
         width:40%;
+    }
+
+    .card-text {
+        max-width: 100%;
+        font-size: 30px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
 }

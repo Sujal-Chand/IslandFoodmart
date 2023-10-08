@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IslandFoodmart.Areas.Identity.Data;
 using IslandFoodmart.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IslandFoodmart.Views
 {
@@ -55,6 +56,7 @@ namespace IslandFoodmart.Views
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CategoryID,CategoryName")] Category category)
         {
@@ -68,6 +70,7 @@ namespace IslandFoodmart.Views
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Category == null)
@@ -88,6 +91,7 @@ namespace IslandFoodmart.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("CategoryID,CategoryName")] Category category)
         {
             if (id != category.CategoryID)
@@ -119,6 +123,7 @@ namespace IslandFoodmart.Views
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Category == null)

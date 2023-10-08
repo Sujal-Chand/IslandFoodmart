@@ -94,7 +94,7 @@ namespace IslandFoodmart
                     user.Email = Aemail;
                     user.FirstName = "Admin";
                     user.LastName = "Account";
-
+                    
                     await userManager.CreateAsync(user, Apassword);
                     await userManager.AddToRoleAsync(user, "Admin");
 
@@ -109,7 +109,7 @@ namespace IslandFoodmart
 
                     await userManager.CreateAsync(user, Epassword);
                     await userManager.AddToRoleAsync(user, "Employee");
-
+                    
                 }
             }
 

@@ -27,7 +27,7 @@ namespace IslandFoodmart.Areas.Identity.Data
                 new Category { CategoryID = 3, CategoryName = "Drinks" },
                 new Category { CategoryID = 4, CategoryName = "Pantry" },
                 new Category { CategoryID = 5, CategoryName = "Personal Care" });
-           /* builder.Entity<Product>().HasData(
+           /*builder.Entity<Product>().HasData(
                 new Product { ProductID = 1, CategoryID = 3, ImagePath = "image", ProductName = "V Drink 250ml", ProductPrice = 4, ProductStock = 20 },
                 new Product { ProductID = 2, CategoryID = 3, ImagePath = "image", ProductName = "Coke 440ml", ProductPrice = 4, ProductStock = 20 },
                 new Product { ProductID = 3, CategoryID = 3, ImagePath = "image", ProductName = "Sprite", ProductPrice = 4, ProductStock = 20 },

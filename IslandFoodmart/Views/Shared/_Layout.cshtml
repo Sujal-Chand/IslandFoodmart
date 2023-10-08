@@ -29,6 +29,7 @@
                         <ul class="dropdown-menu">
                             <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Fresh Foods" class="dropdown-item" style="border: none;">Fresh Foods</button></form></li>
                             <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Frozen Foods" class="dropdown-item" style="border: none;">Frozen Foods</button></form></li>
+                            <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Dairy" class="dropdown-item" style="border: none;">Dairy</button></form></li>
                             <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Drinks" class="dropdown-item" style="border: none;">Drinks</button></form></li>
                             <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Pantry" class="dropdown-item" style="border: none;">Pantry</button></form></li>
                             <li><form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="Personal Care" class="dropdown-item" style="border: none;">Personal Care</button></form></li>
@@ -37,7 +38,7 @@
                             </li>
                             <li class="nav-item dropend">
                                 <form asp-controller="Products" asp-action="Index" method="get">
-                                    <button name="SearchString" value="" class="nav-link" style="color : red; border: none; background-color : white;">
+                                    <button name="SearchString" value="" class="nav-link" style="color : green; border: none; background-color : white;">
                                         Shop All
                                     </button>
                                 </form>
@@ -46,7 +47,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Deals</a>
+                        <a class="nav-link text-white"  asp-area="" asp-controller="Home" asp-action="Deals     ">Deals</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>
