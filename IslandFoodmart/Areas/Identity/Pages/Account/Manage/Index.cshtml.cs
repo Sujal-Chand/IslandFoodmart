@@ -69,6 +69,7 @@ namespace IslandFoodmart.Areas.Identity.Pages.Account.Manage
 
             [Phone]
             [Display(Name = "Phone number")]
+            [RegularExpression(@"^\+?64\s?2\d{7,15}$", ErrorMessage = "Phone number must include +64 and have a valid length.")]
             public string PhoneNumber { get; set; }
         }
 

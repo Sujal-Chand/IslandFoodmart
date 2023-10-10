@@ -93,6 +93,49 @@ namespace IslandFoodmart.Views
        
             var first = orders.FirstOrDefault();
 
+            if (first == null)
+            {
+                var newOrder = new ShoppingOrder
+                {
+                    OrderDate = DateTime.Now,
+                    PickupDate = DateTime.Now,
+                    UserName = user.UserName,
+                    ShoppingFirstName = user.FirstName,
+                    OrderStatus = Status.Incompleted,
+                    CartQuantity = 1,
+                    PriceTotal = 0
+                };
+                var payment = new Payment
+                {
+                    ShoppingOrder = newOrder,
+                    PaymentAmount = newOrder.PriceTotal,
+                    PaymentMethod = "Debit",
+                    PaymentDate = newOrder.OrderDate
+
+                };
+                _context.Add(payment);
+                _context.Add(newOrder);
+
+                await _context.SaveChangesAsync();
+
+                orders = from r in _context.ShoppingOrder
+                         orderby r.UserName
+                         where r.UserName == user.UserName
+                         select r;
+
+                orders = orders.OrderByDescending(s => s.OrderDate);
+                var updatedfirst = orders.FirstOrDefault();
+                var newShoppingItem = new ShoppingItem
+                {
+                    ShoppingOrderID = updatedfirst.ShoppingOrderID,
+                    ProductID = (int)id,
+                    Quantity = 1
+                };
+                _context.Add(newShoppingItem);
+                await _context.SaveChangesAsync();
+                int? ID = (int)id;
+                return RedirectToAction("Details", "Products", new { id = ID, inCart = 1, view = search });
+            }
             if (first.OrderStatus == Status.Incompleted)
             {
                 var ProductFilter = from cr in _context.ShoppingItem.Include(s => s.Product).Include(s => s.ShoppingOrder)
