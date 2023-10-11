@@ -19,7 +19,7 @@
             <!-- Contact Form -->
             <div class="contact form">
                 <h3>Get in touch</h3>
-                <form>
+                <form action="https://formspree.io/f/xoqoyvwj" method="POST">
 
                     <div class="formBox">
                         <div class="row50">
@@ -27,22 +27,22 @@
                             {
                                 <div class="inputBox">
                                     <span>First Name</span>
-                                    <input type="text" value="@UserManager.GetUserAsync(User).Result.FirstName">
+                                    <input type="text" name="first_name" value="@UserManager.GetUserAsync(User).Result.FirstName">
                                 </div>
                                 <div class="inputBox">
                                     <span>Last Name</span>
-                                    <input type="text" value="@UserManager.GetUserAsync(User).Result.LastName">
+                                    <input type="text" name="last_name" value="@UserManager.GetUserAsync(User).Result.LastName">
                                 </div>
                             }
                             else
                             {
                                 <div class="inputBox">
                                     <span>First Name</span>
-                                    <input type="text" placeholder="Jane">
+                                    <input type="text" name="first_name" placeholder="Jane">
                                 </div>
                                 <div class="inputBox">
                                     <span>Last Name</span>
-                                    <input type="text" placeholder="Doe">
+                                    <input type="text" name="last_name" placeholder="Doe">
                                 </div>
                             }
                         </div>
@@ -52,29 +52,29 @@
                             {
                                 <div class="inputBox">
                                     <span>Email</span>
-                                    <input type="text" placeholder="janedoe@email.com" value="@UserManager.GetUserAsync(User).Result.Email">
+                                    <input type="text" placeholder="janedoe@email.com" name="email" value="@UserManager.GetUserAsync(User).Result.Email">
                                 </div>
                                 <div class="inputBox">
                                     <span>Mobile</span>
-                                    <input type="text" placeholder="012 345 6789" value="@UserManager.GetUserAsync(User).Result.PhoneNumber">
+                                    <input type="text" placeholder="012 345 6789" name="phone" value="@UserManager.GetUserAsync(User).Result.PhoneNumber">
                                 </div>
                             }
                             else
                             {
                                 <div class="inputBox">
                                     <span>Email</span>
-                                    <input type="text" placeholder="janedoe@email.com">
+                                    <input type="text" name="email" placeholder="janedoe@email.com">
                                 </div>
                                 <div class="inputBox">
                                     <span>Mobile</span>
-                                    <input type="text" placeholder="012 345 6789">
+                                    <input type="text" name="phone" placeholder="012 345 6789">
                                 </div>
                             }
                         </div>
                         <div class="row100">
                             <div class="inputBox">
                                 <span>Message</span>
-                                <textarea placeholder="Type your message..."></textarea>
+                                <textarea name="message" placeholder="Type your message..."></textarea>
                             </div>
                         </div>
                         
