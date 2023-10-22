@@ -22,6 +22,8 @@ namespace IslandFoodmart.Models
         [Required]
         public decimal ProductPrice { get; set; }
 
+        public decimal SpecialPrice { get; set; }
+
         [Display(Name = "Stock")]
         [Required]
         public int ProductStock { get; set; }

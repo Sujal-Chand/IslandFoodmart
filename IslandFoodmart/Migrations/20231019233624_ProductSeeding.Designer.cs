@@ -3,6 +3,7 @@ using System;
 using IslandFoodmart.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IslandFoodmart.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231019233624_ProductSeeding")]
+    partial class ProductSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,7 +250,7 @@ namespace IslandFoodmart.Migrations
                             ProductName = "Colgate Triple Action 110g",
                             ProductPrice = 4.5m,
                             ProductStock = 12,
-                            SpecialPrice = 4m
+                            SpecialPrice = 0m
                         },
                         new
                         {
@@ -258,7 +260,7 @@ namespace IslandFoodmart.Migrations
                             ProductName = "Maggi Chicken Moodles 360g",
                             ProductPrice = 5m,
                             ProductStock = 10,
-                            SpecialPrice = 4.5m
+                            SpecialPrice = 0m
                         },
                         new
                         {
@@ -338,7 +340,7 @@ namespace IslandFoodmart.Migrations
                             ProductName = "Toilet Paper 3ply",
                             ProductPrice = 18m,
                             ProductStock = 6,
-                            SpecialPrice = 16.99m
+                            SpecialPrice = 0m
                         },
                         new
                         {
@@ -386,9 +388,9 @@ namespace IslandFoodmart.Migrations
                             CategoryID = 1,
                             ImagePath = "foodimage_0018_Layer-12.png",
                             ProductName = "Natures Fresh White Toast Bread",
-                            ProductPrice = 6m,
+                            ProductPrice = 4m,
                             ProductStock = 8,
-                            SpecialPrice = 5.5m
+                            SpecialPrice = 0m
                         },
                         new
                         {
@@ -398,7 +400,7 @@ namespace IslandFoodmart.Migrations
                             ProductName = "Nivea Protect & Moisture Sunscreen 50+SPF",
                             ProductPrice = 18.99m,
                             ProductStock = 5,
-                            SpecialPrice = 16.99m
+                            SpecialPrice = 0m
                         },
                         new
                         {
@@ -428,7 +430,7 @@ namespace IslandFoodmart.Migrations
                             ProductName = "Coke Classic 440ml",
                             ProductPrice = 3.99m,
                             ProductStock = 41,
-                            SpecialPrice = 2.99m
+                            SpecialPrice = 0m
                         },
                         new
                         {
@@ -438,7 +440,7 @@ namespace IslandFoodmart.Migrations
                             ProductName = "V Drink Green 500ml",
                             ProductPrice = 5.5m,
                             ProductStock = 30,
-                            SpecialPrice = 4.5m
+                            SpecialPrice = 0m
                         },
                         new
                         {
@@ -458,7 +460,7 @@ namespace IslandFoodmart.Migrations
                             ProductName = "V Drink Blue 500ml",
                             ProductPrice = 5.5m,
                             ProductStock = 42,
-                            SpecialPrice = 4.5m
+                            SpecialPrice = 0m
                         },
                         new
                         {

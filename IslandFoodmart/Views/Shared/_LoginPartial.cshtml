@@ -6,17 +6,17 @@
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
-    {
-        var orders = from r in context.ShoppingOrder
-                     orderby r.UserName
-                     where r.UserName == UserManager.GetUserAsync(User).Result.UserName
-                     select r;
-        orders = orders.OrderByDescending(s => s.OrderDate);
-        var first = orders.FirstOrDefault();
-        if (first != null)
         {
-            if (first.CartQuantity == 0)
+            var orders = from r in context.ShoppingOrder
+                         orderby r.UserName
+                         where r.UserName == UserManager.GetUserAsync(User).Result.UserName
+                         select r;
+            orders = orders.OrderByDescending(s => s.OrderDate);
+            if (orders != null)
             {
+                var first = orders?.FirstOrDefault();
+                if (first.CartQuantity == 0)
+                {
                 <li class="nav-item">
                     <a class="nav-link text-white" asp-controller="ShoppingItems" asp-action="Index">Empty Cart</a>
                 </li>

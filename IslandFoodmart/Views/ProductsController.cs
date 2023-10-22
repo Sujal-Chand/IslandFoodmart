@@ -59,7 +59,15 @@ namespace IslandFoodmart.Views
             //Select from SearchString -- SearchString is also used for finding products of different categories through an or statement.
             if (!String.IsNullOrEmpty(SearchString))
             {
-                products = products.Where(ss => ss.ProductName!.Contains(SearchString) || ss.Category.CategoryName!.Contains(SearchString));
+                if(SearchString.Contains("specialprice"))
+                {
+                    products = products.Where(ss => ss.SpecialPrice >= 0.01M);
+                }
+                else
+                {
+                    products = products.Where(ss => ss.ProductName!.Contains(SearchString) || ss.Category.CategoryName!.Contains(SearchString));
+                }
+                
             }
             //Switch case function for sort functionality
             switch (sortOrder)

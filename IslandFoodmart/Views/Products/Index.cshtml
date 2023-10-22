@@ -49,16 +49,22 @@
 </head>
 <body>
     <div style="background-color: white; border-radius: 20px; padding: 20px;">
-        <div class="container">
-            
-                    
+        <div class="container">                 
             <div class="row" style="" padding-bottom: 20px">
                 @foreach (var item in Model)
                 {
                     <div class="penes col-sm-6 card mb-3" style="border-radius: 20px;">
                         <img src="~/lib/@Html.DisplayFor(modelItem => item.ImagePath)" alt="@Html.DisplayFor(modelItem => item.ProductName)" style="height: auto; padding-top: 10px;">
                         <h3 class="card-text">@Html.DisplayFor(modelItem => item.ProductName)</h3>
-                        <p class="price">$@Html.DisplayFor(modelItem => item.ProductPrice)</p>
+                        @if (item.SpecialPrice >= 0.01M)
+                        {
+                            <p class="price" style="color: green;">Special $@Html.DisplayFor(modelItem => item.SpecialPrice)</p>
+                            <p style="color: red;">Normal price: $@Html.DisplayFor(modelItem => item.ProductPrice).</p>
+                        }
+                        else
+                        {
+                            <p class="price">$@Html.DisplayFor(modelItem => item.ProductPrice)</p>
+                        }
                         <p>@Html.DisplayFor(modelItem => item.ProductStock) currently in stock.</p>
                         <form asp-action="Details" asp-route-id="@item.ProductID" asp-route-view="@ViewBag.SearchURL" style="padding-bottom: 10px;">
 

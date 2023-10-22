@@ -47,7 +47,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white"  asp-area="" asp-controller="Home" asp-action="Deals     ">Deals</a>
+                        <form asp-controller="Products" asp-action="Index" method="get"><button name="SearchString" value="specialprice" class="nav-link text-white" style="background-color: transparent; border: none;">Deals</button></form>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>

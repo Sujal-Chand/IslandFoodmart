@@ -43,10 +43,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
-                <td>
-                    $@Math.Round((decimal)item.Quantity * item.Product.ProductPrice, 2) <!-- Rounding to 2 decimal places -->
+                @if (item.Product.SpecialPrice >= 0.01M)
+                {
+                    <td>
+                         $@Math.Round((decimal)item.Quantity * item.Product.SpecialPrice, 2) <!-- Rounding to 2 decimal places -->
 
-                </td>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        $@Math.Round((decimal)item.Quantity * item.Product.ProductPrice, 2) <!-- Rounding to 2 decimal places -->
+
+                    </td>
+                }
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ShoppingItemID">Edit Quantity</a> |
                     <a asp-action="Delete" asp-route-id="@item.ShoppingItemID">Remove from Cart</a>
