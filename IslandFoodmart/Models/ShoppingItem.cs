@@ -14,7 +14,7 @@ namespace IslandFoodmart.Models
         [Required]
         public int ProductID { get; set; }
 
-        [Display(Name = "Product Name")]
+        [Display(Name = "Product Quantity")]
         [Required]
         public int Quantity { get; set; }
 
